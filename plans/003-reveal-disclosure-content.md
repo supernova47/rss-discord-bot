@@ -12,12 +12,14 @@ The advanced-settings panel and landing FAQ use native details disclosures. Thei
 
 Current advanced-settings disclosure in rssbot/templates/feed_form.html:
 
+The following excerpt shows the English branch. The application keeps its Russian localization.
+
 ~~~html
     <details class="advanced-settings" {% if feed or error %}open{% endif %}>
       <summary class="advanced-settings-summary">
         <span class="advanced-settings-copy">
-          <strong>{% if language == 'en' %}Optional settings{% else %}Дополнительные настройки{% endif %}</strong>
-          <small>{% if language == 'en' %}Polling interval, sender profile, and post appearance{% else %}Интервал проверки, профиль отправителя и оформление публикации{% endif %}</small>
+          <strong>Optional settings</strong>
+          <small>Polling interval, sender profile, and post appearance</small>
         </span>
         <span class="advanced-settings-chevron" aria-hidden="true">⌄</span>
       </summary>

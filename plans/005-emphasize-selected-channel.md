@@ -10,6 +10,8 @@
 
 Changing either channel selector updates the Discord preview destination by replacing textContent immediately. The page explicitly tells users that the sample destination updates, but the preview gives no visual cue linking the selection to the changed value.
 
+The following excerpt shows the English branch. The application keeps its Russian localization.
+
 Current update logic in rssbot/static/landing.js:
 
 ~~~js
@@ -27,7 +29,7 @@ Current update logic in rssbot/static/landing.js:
 The destination output in rssbot/templates/landing.html is already a polite live region:
 
 ~~~html
-<p class="landing-discord-channel">{% if language == 'en' %}Posts in{% else %}Публикация в{% endif %} <strong data-channel-output aria-live="polite">{% if language == 'en' %}# news{% else %}# новости{% endif %}</strong></p>
+<p class="landing-discord-channel">Posts in <strong data-channel-output aria-live="polite"># news</strong></p>
 ~~~
 
 ## Target

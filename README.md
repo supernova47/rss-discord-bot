@@ -1,102 +1,144 @@
-# Discord RSS Bot
+# FeedFlow
 
-Самостоятельный RSS/Atom-бот для Discord с веб-панелью. Владелец или администратор сервера входит через Discord, выбирает сервер и канал, добавляет ленту и задаёт шаблон публикаций.
+[![Latest release](https://img.shields.io/github/v/release/supernova47/rss-discord-bot?label=release)](https://github.com/supernova47/rss-discord-bot/releases/latest)
 
-## Возможности MVP
+FeedFlow is a self-hosted Discord bot with a web dashboard. It watches RSS and Atom feeds and posts new entries to the Discord channels you choose.
 
-- Установка бота на свои и чужие Discord-серверы через OAuth2.
-- Веб-панель для выбора сервера и канала, добавления, редактирования, паузы и удаления лент.
-- RSS и Atom, отдельный интервал проверки для каждой ленты.
-- Автоматический поиск RSS/Atom-адресов по ссылке на сайт: найденные варианты и последние записи можно просмотреть и выбрать в форме добавления.
-- YouTube-каналы подключаются через Atom-ленту новых видео; отдельный API-ключ YouTube не требуется.
-- Новые публикации отправляются без повтора уже доставленных. При первом добавлении бот запоминает последнюю запись и не рассылает архив.
-- Настраиваемая карточка: заголовок и описание по шаблону, цвет и изображение из ленты.
-- Для каждой ленты настраивается формат даты публикации: относительное время, местные дата и время, полная дата или сочетание относительного и точного времени. Discord автоматически учитывает язык и часовой пояс читателя.
-- Изображение извлекается как из полей RSS/Atom, так и из HTML-описания записи.
-- Редактор порядка блоков карточки: заголовок, изображение или GIF, описание и кнопки-ссылки; разделители можно ставить в выбранные места.
-- До пяти настраиваемых кнопок-ссылок на запись или постоянный адрес для каждой ленты.
-- GIF и MP4 из RSS передаются в отдельный медиа-блок Discord между выбранными текстовыми блоками; MP4 отображается как видео, если его поддерживают Discord и источник.
-- Дополнительный Markdown-текст перед embed.
-- Отдельное имя и аватар отправителя для каждой ленты через вебхук.
-- Загрузка аватара PNG или JPG/JPEG (до 8 МБ) или публичная HTTPS-ссылка.
-- Тестовая отправка выбранной свежей записи из RSS; команды `/rss list`, `/rss test` и `/rss toggle`.
-- Панель на русском и английском языках с автоопределением языка браузера.
-- Необязательные Telegram-уведомления о потере и восстановлении Discord-подключения.
-- Сохранение настроек, OAuth-сессий и истории доставки в SQLite. Токены Discord и вебхуков шифруются перед записью в базу.
-- Проверка DNS-адресов и запрет приватных IP для RSS URL, защита от подмены через переадресации, ограничение размера ленты и запрет на отправку массовых упоминаний.
+## Features
 
-## Локальный запуск на Windows
+- Install the bot on Discord servers with OAuth2.
+- Add, edit, search, pause, test, and remove feeds from the web dashboard.
+- Discover RSS and Atom feeds from a website URL and preview recent entries before subscribing.
+- Follow YouTube channels through their public Atom feeds. No YouTube API key is required.
+- Avoid duplicate deliveries. When a feed is added, FeedFlow records its current position instead of posting the archive.
+- Customize each post with templates, timestamps, colors, images, GIFs, video, link buttons, and a per-feed sender name and avatar.
+- Use the dashboard in English or Russian; its default language follows the browser.
+- Optionally receive Telegram alerts when the Discord connection is lost and restored.
+- Store settings and delivery history in SQLite. Discord OAuth and webhook tokens are encrypted before they are stored.
+- Validate feed DNS records and redirects, reject private IP addresses, limit feed response sizes, and prevent mass mentions.
 
-1. Установите Python 3.11 или новее и создайте Discord-приложение в [Developer Portal](https://discord.com/developers/applications).
-2. Включите Bot и скопируйте Bot Token. Для OAuth2 понадобятся Application ID и Client Secret.
-3. В разделе **Installation** включите **Guild Install** и задайте scopes `bot` и `applications.commands`. Боту нужны разрешения **View Channel**, **Send Messages**, **Embed Links** и **Manage Webhooks**.
-4. В настройках OAuth2 добавьте redirect URI `http://localhost:8000/auth/callback`.
-5. Скопируйте `.env.example` в `.env` и заполните Discord-параметры. Секреты можно сгенерировать командами из PowerShell:
+## Run locally on Windows
 
-   ```powershell
+### Requirements
+
+- Windows 10 or later
+- Python 3.11 or later
+- A Discord application with a bot token and OAuth credentials
+
+### Set up Discord
+
+1. Create an application in the [Discord Developer Portal](https://discord.com/developers/applications).
+2. Add a bot and copy its token.
+3. In Installation, enable Guild Install and select the bot and applications.commands scopes. Grant View Channels, Send Messages, Embed Links, and Manage Webhooks. Administrator permission is not required.
+4. In OAuth2, add this redirect URI:
+
+   ~~~text
+   http://localhost:8000/auth/callback
+   ~~~
+
+5. Keep the Application ID and Client Secret private.
+
+For a detailed checklist, see [Discord Developer Portal setup](discord_portal_assets/PORTAL_SETUP.md).
+
+### Configure and start
+
+1. Clone the repository and open its folder in PowerShell:
+
+   ~~~powershell
+   git clone https://github.com/supernova47/rss-discord-bot.git
+   Set-Location rss-discord-bot
+   ~~~
+
+2. Copy .env.example to .env and fill in DISCORD_BOT_TOKEN, DISCORD_CLIENT_ID, and DISCORD_CLIENT_SECRET.
+3. Generate the session and encryption keys:
+
+   ~~~powershell
    python -c "import secrets; print(secrets.token_urlsafe(48))"
    python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-   ```
+   ~~~
 
-   Первый результат вставьте в `SESSION_SECRET`, второй — в `WEBHOOK_ENCRYPTION_KEY`. Сохраните ключ шифрования вместе с резервной копией базы: без него нельзя будет расшифровать сохранённые токены.
+   Put the first value in SESSION_SECRET and the second in WEBHOOK_ENCRYPTION_KEY. Keep the encryption key with your database backups; without it, stored webhook tokens cannot be decrypted.
 
-6. Запустите `start.bat`. При первом запуске он создаст `.venv`, установит зависимости и запустит панель в этом окне. Оставьте окно открытым; `Ctrl+C` или закрытие окна остановит бота и панель.
-7. Откройте [http://localhost:8000](http://localhost:8000), войдите через Discord, добавьте бота на сервер и создайте первую ленту.
+4. Run start.bat. It creates a virtual environment, installs the application dependencies, and starts the bot and dashboard in the current window.
+5. Open [http://localhost:8000](http://localhost:8000), sign in with Discord, add the bot to a server, and configure a feed.
 
-### Сборка Python-пакета
+Keep the terminal window open while FeedFlow runs. Press Ctrl+C to stop the bot and dashboard. Only one application instance should use a database at a time.
 
-Для разработки и сборки установите дополнительные зависимости в виртуальное окружение проекта, затем соберите wheel и исходный архив:
+### Developer checks and package build
 
-```powershell
+Install the development dependencies, run the Python and JavaScript checks, and build the wheel:
+
+~~~powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+node --test
 .\.venv\Scripts\python.exe -m build
-```
+~~~
 
-Команда `python -m build` создаёт архивы в каталоге `dist/`. После изменения проекта повторно запустите сборку из корня проекта.
+The build command writes package archives to dist/.
 
-Если тестируете slash-команды на одном сервере, укажите его ID в `DEV_GUILD_ID`. Команды появятся там быстрее. Если переменная пустая, команды регистрируются глобально и могут появиться не сразу.
+To make slash commands appear sooner while testing, set DEV_GUILD_ID to a test server ID. Leave it empty for global registration; Discord may take longer to publish global commands.
 
-### Telegram-уведомления о соединении
+## Deploy to a VPS
 
-Чтобы получать сообщения о потере и восстановлении Discord Gateway, создайте отдельного Telegram-бота через [@BotFather](https://t.me/BotFather). Напишите ему `/start`, узнайте свой числовой Telegram ID, например через [@userinfobot](https://t.me/userinfobot), затем заполните `TELEGRAM_ALERT_BOT_TOKEN` и `TELEGRAM_ALERT_CHAT_ID` в `.env`. Если обе переменные пустые, уведомления отключены. FeedFlow отправляет одно сообщение на начало сбоя и одно после восстановления, включая длительность. При остановке приложения для обслуживания уведомление о потере связи не отправляется.
+FeedFlow includes Docker Compose configurations with Caddy for HTTPS and a persistent SQLite volume.
 
-### Запуск через Docker
+- [General VPS setup, including XorekCloud](deploy/newvps/README.md)
+- [Update an existing installation from a GitHub Release](deploy/UPDATE.md)
+- [Oracle Cloud deployment](deploy/oracle/README.md)
+- [RUVDS deployment](deploy/ruvds/README.md)
+- [Selectel deployment](deploy/selectel/README.md)
 
-В проект добавлены `Dockerfile` и `docker-compose.yml`. Заполните `.env`, укажите постоянный `APP_BASE_URL` с HTTPS и выполните `docker compose up -d`. SQLite хранится в отдельном Docker volume. Запускайте только один экземпляр приложения: SQLite и планировщик лент рассчитаны на один процесс.
+The deploy/newvps directory name is kept for compatibility with existing installations. The same configuration can be used on a supported Ubuntu or Debian VPS, including the XorekCloud VMmanager panel.
 
-### Размещение в Oracle Cloud
+Before exposing the dashboard to the internet, set APP_BASE_URL to its public HTTPS address and add the matching /auth/callback URL to the Discord Developer Portal. Do not expose port 8000 directly; Caddy handles public HTTPS traffic.
 
-Пошаговая инструкция по запуску на бесплатной VM Oracle Cloud Always Free, включая HTTPS, постоянный диск, упаковку проекта для Windows и перенос базы: [`deploy/oracle/README_RU.md`](deploy/oracle/README_RU.md). Бесплатная VM может быть остановлена провайдером при длительной низкой загрузке; перед размещением ознакомьтесь с ограничениями в инструкции.
+## Optional Telegram alerts
 
-### Размещение на NEWVPS
+Create a separate bot with [@BotFather](https://t.me/BotFather), start a chat with it, and obtain the numeric chat ID. Set TELEGRAM_ALERT_BOT_TOKEN and TELEGRAM_ALERT_CHAT_ID in .env. Leave both values empty to disable alerts. FeedFlow sends one alert for a sustained disconnect and another when the connection is restored.
 
-Пошаговая инструкция по запуску на NEWVPS: тариф LITE, российская оплата, Ubuntu/Debian, домен и HTTPS, Docker, перенос базы и резервное копирование: [`deploy/newvps/README_RU.md`](deploy/newvps/README_RU.md). Тариф LITE указан по цене 189 ₽/мес. с 1 ГБ RAM, SSD 15 ГБ и одним IP.
+## Message templates
 
-Инструкции для альтернативных провайдеров: [RUVDS](deploy/ruvds/README_RU.md), [Selectel](deploy/selectel/README_RU.md) и [Oracle Cloud](deploy/oracle/README_RU.md).
+The feed form can discover RSS or Atom URLs from a website. It supports websites that publish a feed; it does not scrape arbitrary pages without RSS or Atom. For YouTube, paste a channel URL. If discovery cannot resolve it, use a channel URL in the /channel/UC… format or a direct Atom URL.
 
-## Шаблоны сообщений
+Available template variables:
 
-Чтобы найти источник автоматически, вставьте ссылку на сайт или YouTube-канал в форму добавления и нажмите **Найти RSS/Atom**. Для сайта бот проверит объявленные RSS/Atom-ссылки и несколько обычных адресов ленты, затем покажет варианты и их последние записи. Для YouTube бот определит ID канала и подключит Atom-ленту новых видео. Если страницу канала нельзя разрешить автоматически, укажите ссылку `/channel/UC…` или прямой Atom-адрес. Другие типы источников и загрузка новостей со страниц без RSS/Atom не поддерживаются.
-
-Доступные переменные:
-
-| Переменная | Значение |
+| Variable | Description |
 | --- | --- |
-| `{title}` | Заголовок записи |
-| `{url}` или `{link}` | Ссылка на запись |
-| `{description}` или `{content}` | Краткий текст без HTML-разметки |
-| `{author}` | Автор записи |
-| `{published}` | Дата публикации в UTC |
-| `{feed}` | Название ленты в панели |
-| `{image}` | Ссылка на изображение, включая картинку из HTML-описания RSS |
-| `{media}` | Ссылка на GIF или видео для отображения в карточке |
-| `{id}` | Стабильный идентификатор записи |
+| <code>{title}</code> | Entry title |
+| <code>{url}</code> or <code>{link}</code> | Entry URL |
+| <code>{description}</code> or <code>{content}</code> | Plain-text entry description |
+| <code>{author}</code> | Entry author |
+| <code>{published}</code> | Publication time in UTC |
+| <code>{feed}</code> | Feed name shown in the dashboard |
+| <code>{image}</code> | Image URL, including images found in the feed's HTML description |
+| <code>{media}</code> | GIF or video URL |
+| <code>{id}</code> | Stable entry identifier |
 
-Например, заголовок карточки можно задать как `{title}`, описание — как `{description}\n\n[Открыть на сайте]({url})`, а дополнительный текст — как `Новая публикация в ленте **{feed}**`.
+For example:
 
-## Данные и безопасность
+~~~text
+Embed title: {title}
+Embed description: {description}\n\n[Open the website]({url})
+Additional text: New post from **{feed}**
+~~~
 
-По умолчанию SQLite-файл хранится в `data/rssbot.sqlite3`. Не публикуйте `.env`, файл базы и ключ шифрования. При установке на сервер задайте `APP_BASE_URL` с HTTPS и добавьте соответствующий адрес `/auth/callback` в Discord Developer Portal. Вебхуки создаются ботом в выбранных каналах; ссылку и токен вебхука хранит только бот. Для ленты с загруженным файлом создаётся отдельный вебхук, чтобы Discord хранил её аватар независимо от остальных лент. Загруженные изображения сохраняются в SQLite.
+## Data and security
 
-Для локальной проверки постоянный хостинг не нужен. Позже можно перенести приложение на постоянно работающую виртуальную машину и сохранить SQLite-файл вместе с ключами окружения. Перед публичным запуском добавьте HTTPS, резервные копии базы и журналирование ошибок.
+The default SQLite database path is data/rssbot.sqlite3. Never publish .env, database files, Discord tokens, or encryption keys. Back up the database and WEBHOOK_ENCRYPTION_KEY together. Uploaded feed avatars are stored in SQLite.
 
+The dashboard uses Discord OAuth scopes identify and guilds. Feed publishing uses webhooks created in the selected channels. FeedFlow does not read Discord message history. SQLite and the feed scheduler support a single running application instance.
+
+## Policies and support materials
+
+The Discord Portal folder contains English draft policy documents. Replace every placeholder and review them against the service you operate before publishing:
+
+- [Privacy Policy draft](discord_portal_assets/PRIVACY_POLICY_DRAFT.md)
+- [Terms of Service draft](discord_portal_assets/TERMS_OF_SERVICE_DRAFT.md)
+- [Discord Developer Portal setup](discord_portal_assets/PORTAL_SETUP.md)
+
+## Releases
+
+See [all FeedFlow releases](https://github.com/supernova47/rss-discord-bot/releases). The release archive contains application and deployment files; it excludes .env, database files, tokens, and local virtual environments.
+
+See the [changelog](CHANGELOG.md) for release history.

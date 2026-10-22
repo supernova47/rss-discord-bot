@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Discord RSS Bot - Ctrl+C to stop
+title FeedFlow - Ctrl+C to stop
 cd /d "%~dp0"
 if not exist ".venv\Scripts\python.exe" (
   where.exe py >nul 2>&1
@@ -15,7 +15,7 @@ if not exist ".venv\Scripts\python.exe" (
   .venv\Scripts\python.exe -m pip install -e .
   if errorlevel 1 goto failed
 )
-echo Discord RSS Bot is running in this window. Press Ctrl+C or close the window to stop it.
+echo FeedFlow is running in this window. Press Ctrl+C or close the window to stop it.
 .venv\Scripts\python.exe main.py
 if errorlevel 1 goto failed
 goto done

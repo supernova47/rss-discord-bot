@@ -1,46 +1,44 @@
 # Product
 
-<!-- impeccable:product-schema 1 -->
-
 ## Platform
 
-web
+Web application
 
 ## Users
 
-Основной пользователь — владелец или администратор Discord-сервера, в том числе участник с правом Manage Server. Он настраивает RSS/Atom-источники, чтобы новые публикации автоматически появлялись в нужных каналах без ручного копирования. Успех для него — надёжная доставка новых записей без повторов и без рассылки архива при первом подключении.
+The primary user is a Discord server owner or administrator, including members with the Manage Server permission. They configure RSS and Atom feeds so new posts appear in the right channels without manual reposting. Success means reliable delivery without duplicates and without sending the archive when a feed is first added.
 
-## Product Purpose
+## Product purpose
 
-FeedFlow — самостоятельно размещаемый Discord-бот с веб-панелью. Он проверяет RSS/Atom-ленты и публикует новые записи в выбранные Discord-каналы, помогая администраторам поддерживать сообщества в курсе новостей.
+FeedFlow is a self-hosted Discord bot with a web dashboard. It checks RSS and Atom feeds and posts new entries to selected Discord channels, helping communities keep up with updates.
 
 ## Positioning
 
-Администратор управляет установкой бота и настройками лент через вход Discord OAuth: выбирает сервер и канал, затем задаёт поведение каждой ленты отдельно. При первом подключении сохраняется текущая позиция в источнике, поэтому старые публикации не рассылаются.
+Administrators sign in with Discord OAuth, choose a server and channel, then configure each feed independently. When a feed is added, FeedFlow stores the current position in the source so older posts are not sent.
 
-## Operating Context
+## Operating context
 
-Панель работает в браузере, а бот и планировщик должны оставаться запущенными для проверки лент. Проект поддерживает локальную разработку на Windows и самостоятельное размещение на Linux VPS, включая Docker Compose. SQLite и планировщик рассчитаны на один экземпляр приложения. Администратор входит через Discord, устанавливает бота с необходимыми разрешениями, выбирает канал и настраивает ленты в панели.
+The dashboard runs in a browser. The bot and its scheduler must stay running to check feeds. The project supports local development on Windows and self-hosting on a Linux VPS with Docker Compose. SQLite and the feed scheduler support a single application instance.
 
-## Capabilities and Constraints
+## Capabilities and constraints
 
-- Вход через Discord OAuth2 и выбор доступных пользователю Discord-серверов.
-- Создание, поиск, изменение, приостановка, проверка тестовой публикацией и удаление RSS/Atom-лент.
-- Поддержка YouTube-каналов через Atom без отдельного YouTube API-ключа. Для обычных сайтов поддерживаются публичные HTTP(S)-источники с RSS/Atom; страницы без ленты не сканируются как новости.
-- Для каждой ленты настраиваются Discord-канал, интервал проверки, шаблоны и состав публикации, изображение или медиа, кнопки-ссылки и имя отправителя.
-- Система не должна повторно доставлять уже отправленные записи; при первом добавлении ленты архив не рассылается.
-- Настройки, сессии и история доставки хранятся в SQLite. Discord-токены и токены вебхуков шифруются; ключ шифрования требуется сохранять вместе с резервной копией базы.
-- RSS-адреса проходят проверки DNS и перенаправлений; обращения к приватным IP запрещены. Массовые упоминания при публикации запрещены.
-- Несколько процессов приложения не поддерживаются: SQLite и планировщик лент рассчитаны на один экземпляр.
-- Панель доступна на русском и английском языках, язык по умолчанию определяется по браузеру.
+- Discord OAuth2 sign-in and a list of servers the user can manage.
+- Create, search, edit, pause, test, and delete RSS and Atom feeds.
+- Follow YouTube channels through Atom without a separate YouTube API key. Other websites must expose a public HTTP(S) RSS or Atom feed; pages without a feed are not scraped.
+- Configure the target Discord channel, polling interval, message templates and layout, image or media, link buttons, and sender identity for each feed.
+- Prevent duplicate deliveries. Do not send the archive when a feed is first added.
+- Store settings, sessions, and delivery history in SQLite. Encrypt Discord OAuth and webhook tokens before storing them.
+- Validate feed DNS records and redirects, reject private IP addresses, and prevent mass mentions.
+- Support one application process only; SQLite and the feed scheduler are not designed for multiple replicas.
+- Provide an English and Russian dashboard. Detect the default language from the browser.
 
-## Evidence on Hand
+## Evidence
 
-Подтверждения возможностей находятся в README, реализации `rssbot/` и инструкциях размещения в `deploy/`. В проекте нет подтверждённых отзывов пользователей, кейсов или независимых метрик надёжности; будущие материалы не должны их выдумывать.
+The README, application source, and deployment guides document the current capabilities. The project has no verified customer testimonials, case studies, or independent reliability metrics. Do not invent them in future product copy.
 
-## Product Principles
+## Product principles
 
-- Новые ленты безопасно начинают с текущей записи и не публикуют архив.
-- Администратор явно выбирает канал назначения и управляет каждой лентой отдельно.
-- Обещания о поддержке источников должны соответствовать RSS/Atom-возможностям; произвольные страницы без лент не поддерживаются.
-- При самостоятельном размещении сохраняются контроль над данными и возможность восстановить их из базы и ключей окружения.
+- Start new feeds from the current entry and do not post their archives.
+- Let administrators choose the destination channel and manage each feed independently.
+- Describe source support accurately: FeedFlow supports RSS and Atom, not arbitrary pages without feeds.
+- Preserve operator control over data and provide a recovery path using the database and environment secrets.

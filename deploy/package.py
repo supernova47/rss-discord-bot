@@ -5,7 +5,14 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 ARCHIVE = ROOT / "feedflow-deploy.zip"
-ROOT_FILES = ("Dockerfile", ".dockerignore", "pyproject.toml", "main.py", "deploy/package.py")
+ROOT_FILES = (
+    "Dockerfile",
+    ".dockerignore",
+    "pyproject.toml",
+    "main.py",
+    "deploy/package.py",
+    "deploy/UPDATE.md",
+)
 SOURCE_DIRS = ("rssbot", "deploy/oracle", "deploy/selectel", "deploy/ruvds", "deploy/newvps")
 EXCLUDED_PARTS = {
     ".git",
