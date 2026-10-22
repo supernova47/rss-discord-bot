@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ guild.name }} — FeedFlow{% endblock %}
+{% block content %}
+  <nav class="breadcrumbs"><a href="/">Серверы</a><span>›</span><span>{{ guild.name }}</span></nav>
+  <section class="page-heading guild-heading">
+    <div class="guild-heading-title">
+      {% if guild.icon_url %}<img class="guild-icon large" src="{{ guild.icon_url }}" alt="">{% else %}<div class="guild-icon large guild-icon-placeholder">{{ guild.name[:1] }}</div>{% endif %}
+      <div><p class="eyebrow">НАСТРОЙКИ СЕРВЕРА</p><h1>{{ guild.name }}</h1></div>
+    </div>
+    {% if installed %}<a class="button button-primary" href="/guilds/{{ guild.id }}/feeds/new">＋ Добавить ленту</a>{% endif %}
+  </section>
+
+  {% if notice %}<div class="notice notice-success">{{ notice }}</div>{% endif %}
+  {% if error %}<div class="notice notice-error">{{ error }}</div>{% endif %}
+
+  {% if not installed %}
+    <section class="install-panel">
+      <div class="install-symbol">＋</div>
+      <div><h2>Добавьте бота на сервер</h2><p>После установки вернитесь сюда и выберите канал для публикаций.</p>
+        <p class="permission-note">Боту понадобятся права: View Channel, Send Messages, Embed Links и Manage Webhooks.</p></div>
+      <a class="button button-primary" href="{{ guild.invite_url }}">Добавить на {{ guild.name }}</a>
+    </section>
+  {% elif not bot_ready %}
+    <div class="notice notice-warn">Бот пока подключается. Обновите страницу через несколько секунд.</div>
+  {% else %}
+    <section class="summary-strip">
+      <div><strong>{{ feeds|length }}</strong><span>лент{% if feeds|length == 1 %}а{% else %} в настройках{% endif %}</span></div>
+      <div><strong>{{ channels|length }}</strong><span>доступных канал{% if channels|length == 1 %}а{% else %}ов{% endif %}</span></div>
+      <div><strong>5 мин</strong><span>стандартный интервал проверки</span></div>
+    </section>
+    {% if not channels %}
+      <div class="notice notice-error">Нет каналов, где боту разрешено просматривать сообщения и управлять вебхуками. Выдайте View Channel и Manage Webhooks в настройках канала.</div>
+    {% endif %}
+    {% if feeds %}
+      <section class="feed-list">
+        {% for feed in feeds %}
+          <article class="feed-row">
+            <div class="feed-identity">
+              {% if feed.avatar_preview_url %}<img class="feed-avatar" src="{{ feed.avatar_preview_url }}" alt="">{% else %}<div class="feed-avatar feed-avatar-placeholder">◔</div>{% endif %}
+              <div class="feed-main">
+                <div class="feed-title-line"><h2>{{ feed.title }}</h2><span class="status-pill {% if feed.is_active %}status-ok{% else %}status-muted{% endif %}">{% if feed.is_active %}Активна{% else %}На паузе{% endif %}</span></div>
+                <p class="feed-url">{{ feed.url }}</p>
+                <div class="feed-meta"><span># {{ feed.channel_name }}</span><span>каждые {{ feed.interval_minutes }} мин</span><span>ID {{ feed.id }}</span></div>
+                {% if feed.last_error %}<p class="feed-error">Последняя ошибка: {{ feed.last_error }}</p>{% elif not feed.initialized %}<p class="feed-pending">Проверяем ленту. Старые публикации отправлены не будут.</p>{% elif feed.last_success_at %}<p class="feed-pending">Проверено: <time class="local-datetime" data-unix="{{ feed.last_success_at|int }}">{{ feed.last_success_at|int|datetime_utc }}</time></p>{% endif %}
+              </div>
+            </div>
+            <div class="feed-actions">
+              <a class="button button-quiet button-small" href="/guilds/{{ guild.id }}/feeds/{{ feed.id }}/test">Тест</a>
+              <a class="button button-quiet button-small" href="/guilds/{{ guild.id }}/feeds/{{ feed.id }}/edit">Настроить</a>
+              <form action="/guilds/{{ guild.id }}/feeds/{{ feed.id }}/toggle" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-quiet button-small" type="submit">{% if feed.is_active %}Пауза{% else %}Включить{% endif %}</button></form>
+              <form action="/guilds/{{ guild.id }}/feeds/{{ feed.id }}/delete" method="post" onsubmit="return confirm('Удалить RSS-ленту?')"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-danger button-small" type="submit">Удалить</button></form>
+            </div>
+          </article>
+        {% endfor %}
+      </section>
+    {% else %}
+      <section class="empty-state">
+        <div class="empty-icon">◔</div><h2>Лент пока нет</h2><p>Добавьте первую RSS или Atom-ленту и выберите канал для новостей.</p>
+        {% if channels %}<a class="button button-primary" href="/guilds/{{ guild.id }}/feeds/new">Добавить первую ленту</a>{% endif %}
+      </section>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{% if language == 'en' %}FeedFlow — feeds for your server{% else %}FeedFlow — ленты для сервера{% endif %}{% endblock %}
+{% block content %}
+  {% if not logged_in %}
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">НОВОСТИ БЕЗ РУЧНОЙ РАССЫЛКИ</p>
+        <h1>Любимые источники.<br><span>В нужном Discord-канале.</span></h1>
+        <p class="lead">Добавьте RSS или Atom-ленту, выберите канал и настройте вид публикации. Новости будут приходить сами.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/auth/login">Войти через Discord</a>
+          <a class="button button-secondary" href="{{ invite_url }}">Добавить бота</a>
+        </div>
+        <p class="microcopy">Панель доступна владельцам сервера и участникам с правом Manage Server.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="feed-card">
+          <div class="feed-card-top"><span class="feed-dot"></span><span>НОВАЯ ПУБЛИКАЦИЯ</span><span class="feed-time">сейчас</span></div>
+          <div class="fake-title"></div><div class="fake-line"></div><div class="fake-line short"></div>
+          <div class="fake-link">Читать новость ↗</div>
+        </div>
+        <div class="floating-tag tag-rss">◔ RSS</div>
+        <div class="floating-tag tag-discord">● Discord</div>
+      </div>
+    </section>
+    <section class="feature-row">
+      <article class="feature"><span class="feature-icon">↗</span><div><h3>Настройте один раз</h3><p>Добавляйте несколько лент и направляйте каждую в свой канал.</p></div></article>
+      <article class="feature"><span class="feature-icon">✳</span><div><h3>Оформите по-своему</h3><p>Markdown-шаблоны, embed-карточки, цвет, имя и аватар отправителя.</p></div></article>
+      <article class="feature"><span class="feature-icon">⌁</span><div><h3>Начните с чистого листа</h3><p>После добавления бот запоминает последнюю запись и не засыпает старой историей.</p></div></article>
+    </section>
+  {% else %}
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">ПАНЕЛЬ УПРАВЛЕНИЯ</p>
+        <h1>Ваши Discord-серверы</h1>
+        <p class="lead compact">Выберите сервер, чтобы настроить RSS-ленты.</p>
+      </div>
+      <a class="button button-secondary" href="{{ invite_url }}">Добавить бота на сервер</a>
+    </section>
+    {% if error %}<div class="notice notice-error">{{ error }}</div>{% endif %}
+    {% if request.query_params.get('login') == 'expired' %}<div class="notice">Сессия истекла. Войдите снова.</div>{% endif %}
+    {% if bot_ready is defined and not bot_ready %}<div class="notice notice-warn">Бот подключается к Discord. Список каналов появится через несколько секунд.</div>{% endif %}
+    {% if guilds %}
+      <section class="guild-grid">
+        {% for guild in guilds %}
+          <article class="guild-card">
+            <div class="guild-card-head">
+              {% if guild.icon_url %}<img class="guild-icon" src="{{ guild.icon_url }}" alt="">{% else %}<div class="guild-icon guild-icon-placeholder">{{ guild.name[:1] }}</div>{% endif %}
+              <div class="guild-card-name"><h2>{{ guild.name }}</h2><span class="status-pill {% if guild.installed %}status-ok{% else %}status-muted{% endif %}">{% if guild.installed %}Бот добавлен{% else %}Нужно добавить{% endif %}</span></div>
+            </div>
+            {% if guild.installed %}
+              <a class="button button-primary button-wide" href="{{ guild.dashboard_url }}">Открыть панель <span>→</span></a>
+            {% else %}
+              <a class="button button-secondary button-wide" href="{{ guild.invite_url }}">Добавить бота <span>↗</span></a>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </section>
+    {% else %}
+      <section class="empty-state">
+        <div class="empty-icon">◉</div>
+        <h2>Серверы пока не найдены</h2>
+        <p>Убедитесь, что у вас есть права владельца, администратора или Manage Server.</p>
+        <a class="button button-primary" href="/auth/login">Обновить доступ Discord</a>
+      </section>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+

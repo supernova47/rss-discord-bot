@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{% if language == 'en' %}Test delivery{% else %}Тест рассылки{% endif %} — {{ feed.title }}{% endblock %}
+{% block content %}
+  <nav class="breadcrumbs"><a href="/">Серверы</a><span>›</span><a href="/guilds/{{ guild.id }}">{{ guild.name }}</a><span>›</span><span>Тест ленты</span></nav>
+  <section class="page-heading form-heading">
+    <div><p class="eyebrow">{{ feed.title }}</p><h1>Выберите новость для теста</h1><p class="lead compact">Свежие записи загружены напрямую из RSS. Отправка использует сохранённый формат этой ленты.</p></div>
+  </section>
+  {% if error %}<div class="notice notice-error">{{ error }}</div>{% endif %}
+  {% if entries %}
+    <form class="test-picker" method="post" action="/guilds/{{ guild.id }}/feeds/{{ feed.id }}/test">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="test-entry-list">
+        {% for entry in entries %}
+          <label class="test-entry">
+            <input type="radio" name="entry_key" value="{{ entry.key }}" {% if loop.first %}checked{% endif %}>
+            <span class="test-entry-copy">
+              <strong>{{ entry.title }}</strong>
+              {% if entry.description %}<span>{{ entry.description[:300] }}{% if entry.description|length > 300 %}…{% endif %}</span>{% endif %}
+              <small>{% if entry.published_at %}{{ entry.published_at|datetime_utc }}{% else %}Дата публикации не указана{% endif %}{% if entry.url %} · <a href="{{ entry.url }}" target="_blank" rel="noreferrer">Открыть запись ↗</a>{% endif %}</small>
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+      <div class="form-actions"><a class="button button-quiet" href="/guilds/{{ guild.id }}">Назад</a><button class="button button-primary" type="submit">Отправить выбранную новость</button></div>
+    </form>
+  {% else %}
+    <div class="empty-state test-empty"><h2>Записи не найдены</h2><p>Проверьте адрес RSS или попробуйте позже.</p><a class="button button-quiet" href="/guilds/{{ guild.id }}">Назад к лентам</a></div>
+  {% endif %}
+{% endblock %}

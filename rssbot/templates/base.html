@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="{{ language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>{% block title %}FeedFlow{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="FeedFlow — главная">
+        <img class="brand-avatar" src="/static/feedflow-avatar.png" alt="">
+        <span>Feed<strong>Flow</strong></span>
+      </a>
+      <div class="topbar-actions">
+        <nav class="language-switch" aria-label="Language">
+          <a href="/language/ru" lang="ru" {% if language == 'ru' %}aria-current="page"{% endif %}>RU</a>
+          <a href="/language/en" lang="en" {% if language == 'en' %}aria-current="page"{% endif %}>EN</a>
+        </nav>
+        {% if user %}
+          <span class="user-chip">
+            {% if user.avatar_url %}<img src="{{ user.avatar_url }}" alt="" class="avatar">{% endif %}
+            <span>{{ user.username }}</span>
+          </span>
+          <form action="/auth/logout" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="button button-quiet button-small">Выйти</button>
+          </form>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      <span>RSS и Atom → Discord</span>
+      <span>{% if language == 'en' %}FeedFlow · created by SuperNova{% else %}FeedFlow · создано SuperNova{% endif %}</span>
+    </footer>
+  </div>
+  <script src="/static/i18n.js" defer></script>
+</body>
+</html>
+

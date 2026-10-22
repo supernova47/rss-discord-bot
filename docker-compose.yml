@@ -1,0 +1,17 @@
+services:
+  discord-rss-bot:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /data/rssbot.sqlite3
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - rssbot-data:/data
+
+volumes:
+  rssbot-data:
+

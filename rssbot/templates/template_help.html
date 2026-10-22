@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}{% if language == 'en' %}Template guide — FeedFlow{% else %}Справка по шаблонам — FeedFlow{% endif %}{% endblock %}
+{% block content %}
+  <nav class="breadcrumbs"><a href="/">Серверы</a><span>›</span><span>Справка по шаблонам</span></nav>
+  <section class="page-heading form-heading">
+    <div><p class="eyebrow">СПРАВКА</p><h1>Теги шаблонов публикаций</h1><p class="lead compact">Тег — это имя в фигурных скобках. При отправке бот заменяет его значением из выбранной записи RSS.</p></div>
+  </section>
+  <section class="template-guide">
+    <div class="template-table-wrap">
+      <table class="template-table">
+        <thead><tr><th>Тег</th><th>Что подставится</th><th>Пример значения</th></tr></thead>
+        <tbody>
+          <tr><td><code>{title}</code></td><td>Заголовок публикации</td><td>«Вышла новая версия приложения»</td></tr>
+          <tr><td><code>{url}</code></td><td>Ссылка на публикацию</td><td>https://example.com/news/42</td></tr>
+          <tr><td><code>{link}</code></td><td>То же значение, что и <code>{url}</code></td><td>https://example.com/news/42</td></tr>
+          <tr><td><code>{description}</code></td><td>Краткое описание без HTML-разметки</td><td>В обновлении появились новые функции.</td></tr>
+          <tr><td><code>{content}</code></td><td>То же значение, что и <code>{description}</code></td><td>В обновлении появились новые функции.</td></tr>
+          <tr><td><code>{author}</code></td><td>Автор публикации, если указан в RSS</td><td>Команда проекта</td></tr>
+          <tr><td><code>{published}</code></td><td>Дата публикации в UTC</td><td>2026-10-21 09:30 UTC</td></tr>
+          <tr><td><code>{feed}</code></td><td>Название ленты из настроек бота</td><td>Новости проекта</td></tr>
+          <tr><td><code>{image}</code></td><td>Ссылка на изображение, включая картинку из HTML-описания RSS</td><td>https://example.com/news.jpg</td></tr>
+          <tr><td><code>{media}</code></td><td>Ссылка на GIF или видео для отображения в карточке, если RSS её содержит</td><td>https://example.com/animation.gif</td></tr>
+          <tr><td><code>{id}</code></td><td>Стабильный ID публикации или её ссылка</td><td>news-42</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="guide-example">
+      <h2>Пример карточки публикации</h2>
+      <p>В поле заголовка укажите:</p>
+      <pre><code>{title}</code></pre>
+      <p>В поле описания:</p>
+      <pre><code>{description}
+
+[Читать на сайте]({url})</code></pre>
+      <p>Если запись содержит описание «В обновлении появились новые функции» и ссылку, бот соберёт embed так:</p>
+      <div class="guide-result"><strong>Вышла новая версия приложения</strong><span>В обновлении появились новые функции.</span><a>Читать на сайте ↗</a></div>
+    </section>
+
+    <section class="guide-example">
+      <h2>Порядок блоков, разделители и кнопки-ссылки</h2>
+      <p>Стрелками задайте порядок заголовка, изображения или GIF, описания и кнопок. Нажмите «＋» у нужного блока, чтобы вставить разделитель сразу после него. Разделитель можно перемещать стрелками или удалить. Пустые блоки и отсутствующее изображение пропускаются.</p>
+      {% if language == 'en' %}
+        <p>Use <code>{url}</code> in a button to open the current article, or enter a fixed HTTP(S) address. Each feed supports up to five buttons. Buttons open links and do not perform actions inside Discord.</p>
+      {% else %}
+        <p>В кнопку можно поставить <code>{url}</code>, чтобы открыть страницу текущей новости, или указать постоянный адрес HTTP(S). Для одной ленты поддерживается до пяти кнопок. Кнопки открывают ссылку и не выполняют действий внутри Discord.</p>
+      {% endif %}
+      <p>Бот ищет изображение в RSS-полях и HTML-описании записи. Если лента отдаёт MP4 вместо GIF, Discord может показать его как встроенное видео.</p>
+    </section>
+
+    <section class="guide-example">
+      <h2>{% if language == 'en' %}Discord Markdown{% else %}Markdown в Discord{% endif %}</h2>
+      {% if language == 'en' %}
+        <p>Use Markdown in the title, description, and message templates. For example:</p>
+      {% else %}
+        <p>Markdown можно использовать в заголовке, описании и тексте сообщения. Например:</p>
+      {% endif %}
+      <pre><code>**{title}**
+
+{description}
+
+[Read the article]({url})</code></pre>
+      {% if language == 'en' %}
+        <p>Discord supports bold <code>**text**</code>, italic <code>*text*</code>, underline <code>__text__</code>, strikethrough <code>~~text~~</code>, inline code <code>`code`</code>, quotes starting with <code>&gt;</code>, and lists starting with <code>-</code>.</p>
+      {% else %}
+        <p>Discord поддерживает жирный <code>**текст**</code>, курсив <code>*текст*</code>, подчёркивание <code>__текст__</code>, зачёркивание <code>~~текст~~</code>, код в строке <code>`код`</code>, цитаты с <code>&gt;</code> и списки с <code>-</code>.</p>
+      {% endif %}
+    </section>
+
+    <section class="guide-example">
+      <h2>{% if language == 'en' %}Publication time{% else %}Формат времени публикации{% endif %}</h2>
+      {% if language == 'en' %}
+        <p>Each feed can show relative time, localized date and time, a full date with weekday, or both relative and exact time. Discord automatically formats these timestamps using each reader’s language and timezone.</p>
+        <p>The <code>{published}</code> template tag remains an explicit UTC value.</p>
+      {% else %}
+        <p>Для каждой ленты можно выбрать относительное время, местные дату и время, полную дату с днём недели или оба варианта сразу. Discord автоматически форматирует время на языке и в часовом поясе каждого читателя.</p>
+        <p>Переменная <code>{published}</code> в шаблоне по-прежнему выводит дату явно в UTC.</p>
+      {% endif %}
+    </section>
+
+    <section class="guide-example">
+      <h2>Пример обычного сообщения</h2>
+      <p>В поле «Текст сообщения над карточкой» можно написать:</p>
+      <pre><code>🔔 Новая публикация в **{feed}**: {title}</code></pre>
+      <p>Результат будет выглядеть так:</p>
+      <pre><code>🔔 Новая публикация в **Новости проекта**: Вышла новая версия приложения</code></pre>
+    </section>
+
+    <div class="notice">Если у записи нет значения для тега, он останется пустым. Для ссылок и форматирования можно использовать Markdown Discord.</div>
+    <div class="form-actions"><a class="button button-quiet" href="javascript:history.back()">Назад</a></div>
+  </section>
+{% endblock %}
