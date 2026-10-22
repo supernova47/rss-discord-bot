@@ -33,17 +33,21 @@ from rssbot.formatting import (
     parse_link_buttons,
     template_tags,
 )
+from rssbot.i18n import configure_jinja_environment
+from rssbot.logging_config import configure_moscow_time
 from rssbot.runtime import RSSRuntime
 
+configure_moscow_time()
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    format="%(asctime)s MSK %(levelname)s %(name)s: %(message)s",
 )
 log = logging.getLogger("rssbot.web")
 settings = Settings.from_env()
 db = Database(settings.database_path)
 PACKAGE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(PACKAGE_DIR / "templates"))
+configure_jinja_environment(templates.env)
 MAX_AVATAR_BYTES = 8 * 1024 * 1024
 
 

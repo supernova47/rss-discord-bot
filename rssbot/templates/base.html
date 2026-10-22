@@ -5,17 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <title>{% block title %}FeedFlow{% endblock %}</title>
+  <link rel="icon" type="image/png" href="/static/feedflow-avatar.png">
   <link rel="stylesheet" href="/static/style.css">
+  {% if logged_in is defined and not logged_in %}<link rel="stylesheet" href="/static/landing.css">{% endif %}
+  {% if logged_in is not defined or logged_in %}<link rel="stylesheet" href="/static/dashboard.css">{% endif %}
 </head>
-<body>
-  <div class="page-shell">
+<body{% if logged_in is defined and not logged_in %} class="landing-body"{% else %} class="dashboard-body"{% endif %}>
+  <div class="page-shell{% if logged_in is defined and not logged_in %} landing-shell{% endif %}">
+    {% if logged_in is defined and not logged_in %}
+    <header class="landing-topbar">
+      <div class="landing-header-inner">
+        <a class="brand landing-brand" href="/" aria-label="{{ t("FeedFlow — главная") }}">
+          <img class="brand-avatar" src="/static/feedflow-avatar.png" alt="">
+          <span>Feed<strong>Flow</strong></span>
+        </a>
+        <nav class="landing-nav" aria-label="{% if language == 'en' %}Page sections{% else %}Разделы страницы{% endif %}">
+          <a href="#how-it-works">{% if language == 'en' %}How it works{% else %}Как работает{% endif %}</a>
+          <a href="#publishing-settings">{% if language == 'en' %}Post settings{% else %}Настройки поста{% endif %}</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="landing-header-actions">
+          <nav class="language-switch landing-language-switch" aria-label="{{ t("Язык") }}">
+            <a href="/language/ru" lang="ru" {% if language == 'ru' %}aria-current="page"{% endif %}>RU</a>
+            <a href="/language/en" lang="en" {% if language == 'en' %}aria-current="page"{% endif %}>EN</a>
+          </nav>
+          <a class="landing-login-link" href="/auth/login">{% if language == 'en' %}Log in{% else %}Войти{% endif %}<span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </header>
+    {% else %}
     <header class="topbar">
-      <a class="brand" href="/" aria-label="FeedFlow — главная">
+      <a class="brand" href="/" aria-label="{{ t("FeedFlow — главная") }}">
         <img class="brand-avatar" src="/static/feedflow-avatar.png" alt="">
         <span>Feed<strong>Flow</strong></span>
       </a>
       <div class="topbar-actions">
-        <nav class="language-switch" aria-label="Language">
+        <nav class="language-switch" aria-label="{{ t("Язык") }}">
           <a href="/language/ru" lang="ru" {% if language == 'ru' %}aria-current="page"{% endif %}>RU</a>
           <a href="/language/en" lang="en" {% if language == 'en' %}aria-current="page"{% endif %}>EN</a>
         </nav>
@@ -26,22 +51,39 @@
           </span>
           <form action="/auth/logout" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <button type="submit" class="button button-quiet button-small">Выйти</button>
+            <button type="submit" class="button button-quiet button-small">{{ t("Выйти") }}</button>
           </form>
         {% endif %}
       </div>
     </header>
+    {% endif %}
 
-    <main>
+    <main{% if logged_in is defined and not logged_in %} class="landing-main"{% endif %}>
       {% block content %}{% endblock %}
     </main>
 
+    {% if logged_in is defined and not logged_in %}
+    <footer class="landing-footer">
+      <a class="brand landing-brand" href="/" aria-label="FeedFlow">
+        <img class="brand-avatar" src="/static/feedflow-avatar.png" alt="">
+        <span>Feed<strong>Flow</strong></span>
+      </a>
+      <p>{% if language == 'en' %}Self-hosted RSS and Atom publishing for Discord.{% else %}Самостоятельная публикация RSS и Atom в Discord.{% endif %}</p>
+      <nav aria-label="{% if language == 'en' %}Page sections{% else %}Разделы страницы{% endif %}">
+        <a href="#how-it-works">{% if language == 'en' %}How it works{% else %}Как работает{% endif %}</a>
+        <a href="#publishing-settings">{% if language == 'en' %}Settings{% else %}Настройки{% endif %}</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </footer>
+    {% else %}
     <footer class="footer">
-      <span>RSS и Atom → Discord</span>
+      <span>{{ t("RSS и Atom → Discord") }}</span>
       <span>{% if language == 'en' %}FeedFlow · created by SuperNova{% else %}FeedFlow · создано SuperNova{% endif %}</span>
     </footer>
+    {% endif %}
   </div>
-  <script src="/static/i18n.js" defer></script>
+  <script src="/static/local_dates.js" defer></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>
 

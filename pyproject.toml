@@ -22,13 +22,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["ruff>=0.8,<1"]
+dev = ["build>=1.2,<2", "ruff>=0.8,<1"]
 
 [tool.setuptools.packages.find]
 include = ["rssbot*"]
 
 [tool.setuptools.package-data]
-rssbot = ["templates/*.html", "static/*.css", "static/*.js", "static/*.png"]
+rssbot = ["templates/*.html", "static/*.css", "static/*.js", "static/*.png", "translations.json"]
 
 [tool.ruff]
 target-version = "py311"

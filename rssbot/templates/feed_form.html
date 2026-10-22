@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}{% if language == 'en' %}{% if feed %}Edit{% else %}Add{% endif %} RSS feed — FeedFlow{% else %}{% if feed %}Настроить{% else %}Добавить{% endif %} RSS-ленту — FeedFlow{% endif %}{% endblock %}
+{% block title %}{% if language == 'en' %}{% if feed %}Edit{% else %}Add{% endif %} RSS feed — FeedFlow{% else %}{% if feed %}{{ t("Настроить") }}{% else %}Добавить{% endif %} RSS-ленту — FeedFlow{% endif %}{% endblock %}
 {% block content %}
-  <nav class="breadcrumbs"><a href="/">Серверы</a><span>›</span><a href="/guilds/{{ guild.id }}">{{ guild.name }}</a><span>›</span><span>{% if feed %}Настройки ленты{% else %}Новая лента{% endif %}</span></nav>
-  <section class="page-heading form-heading"><div><p class="eyebrow">ИСТОЧНИК НОВОСТЕЙ</p><h1>{% if feed %}Настройки ленты{% else %}Добавить RSS-ленту{% endif %}</h1><p class="lead compact">{% if language == 'en' %}Choose a source and channel. The other settings can stay at their defaults. Older posts will not be sent.{% else %}Выберите источник и канал. Остальные параметры можно оставить по умолчанию. Старые новости отправляться не будут.{% endif %}</p></div></section>
-  {% if error %}<div class="notice notice-error">{{ error }}</div>{% endif %}
+  <nav class="breadcrumbs"><a href="/">{{ t("Серверы") }}</a><span>›</span><a href="/guilds/{{ guild.id }}">{{ guild.name }}</a><span>›</span><span>{% if feed %}{{ t("Настройки ленты") }}{% else %}{{ t("Новая лента") }}{% endif %}</span></nav>
+  <section class="page-heading form-heading"><div><p class="eyebrow">{{ t("ИСТОЧНИК НОВОСТЕЙ") }}</p><h1>{% if feed %}{{ t("Настройки ленты") }}{% else %}{{ t("Добавить RSS-ленту") }}{% endif %}</h1><p class="lead compact">{% if language == 'en' %}Choose a source and channel. The other settings can stay at their defaults. Older posts will not be sent.{% else %}Выберите источник и канал. Остальные параметры можно оставить по умолчанию. Старые новости отправляться не будут.{% endif %}</p></div></section>
+  {% if error %}<div class="notice notice-error">{{ t(error) }}</div>{% endif %}
   <form class="settings-form" method="post" enctype="multipart/form-data" action="{% if feed %}/guilds/{{ guild.id }}/feeds/{{ feed.id }}/edit{% else %}/guilds/{{ guild.id }}/feeds/new{% endif %}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <section class="form-section">
-      <div class="form-section-heading"><span class="section-number">01</span><div><h2>Источник и канал</h2><p>Куда смотреть и куда публиковать.</p></div></div>
-      <label class="field"><span>Название ленты</span><input name="title" maxlength="100" required value="{{ values.title }}" placeholder="Например, Новости проекта"></label>
-      <label class="field"><span>{% if language == 'en' %}RSS/Atom feed, website, or YouTube channel{% else %}Адрес RSS/Atom, сайта или YouTube-канала{% endif %}</span><input type="url" name="url" required value="{{ values.url }}" placeholder="https://example.com/ or https://youtube.com/@channel"><small>{% if language == 'en' %}Paste a feed URL, website URL, or YouTube channel URL, then find the feed. Only public HTTP(S) sources are supported.{% else %}Вставьте прямой адрес ленты, сайта или YouTube-канала и нажмите «Найти ленту». Поддерживаются публичные источники HTTP(S).{% endif %}</small></label>
+      <div class="form-section-heading"><span class="section-number">01</span><div><h2>{{ t("Источник и канал") }}</h2><p>{{ t("Куда смотреть и куда публиковать.") }}</p></div></div>
+      <label class="field"><span>{{ t("Название ленты") }}</span><input name="title" maxlength="100" required value="{{ values.title }}" placeholder="{{ t("Например, Новости проекта") }}"></label>
+      <label class="field"><span>{% if language == 'en' %}RSS/Atom feed, website, or YouTube channel{% else %}Адрес RSS/Atom, сайта или YouTube-канала{% endif %}</span><input type="url" name="url" required value="{{ values.url }}" placeholder="https://example.com/ or https://youtube.com/@channel"><small>{% if language == 'en' %}Paste a feed URL, website URL, or YouTube channel URL, then find the feed. Only public HTTP(S) sources are supported.{% else %}Вставьте прямой адрес {{ t("ленты") }}, сайта или YouTube-канала и нажмите «Найти ленту». Поддерживаются публичные источники HTTP(S).{% endif %}</small></label>
       <div class="feed-discovery" id="feed-discovery" data-endpoint="/guilds/{{ guild.id }}/feeds/discover" data-media-endpoint="/feeds/preview-media">
         <button class="button button-quiet button-small" id="discover-feed" type="button">{% if language == 'en' %}Find RSS/Atom feed{% else %}Найти RSS/Atom{% endif %}</button>
         <div class="feed-discovery-results" id="feed-discovery-results" hidden aria-live="polite">
@@ -17,11 +17,11 @@
           <div class="feed-discovery-options" id="feed-discovery-options"></div>
         </div>
       </div>
-      <label class="field"><span>Канал Discord</span>
+      <label class="field"><span>{{ t("Канал Discord") }}</span>
         <select name="channel_id" required>
           {% for channel in channels %}<option value="{{ channel.id }}" {% if values.channel_id|string == channel.id|string %}selected{% endif %}># {{ channel.name }}</option>{% endfor %}
         </select>
-        {% if not channels %}<small>Нет каналов с правами View Channel и Manage Webhooks.</small>{% endif %}
+        {% if not channels %}<small>{{ t("Нет каналов с правами View Channel и Manage Webhooks.") }}</small>{% endif %}
       </label>
     </section>
 
@@ -36,47 +36,49 @@
 
       <section class="form-section">
         <div class="form-section-heading"><span class="section-number">02</span><div><h2>{% if language == 'en' %}Polling interval and sender{% else %}Интервал и отправитель{% endif %}</h2><p>{% if language == 'en' %}Choose how often to check the feed and which name to show in Discord.{% else %}Как часто проверять ленту и какое имя показывать в Discord.{% endif %}</p></div></div>
-        <label class="field field-inline"><span>{% if language == 'en' %}Check every{% else %}Проверять каждые{% endif %}</span><span class="input-with-unit"><input type="number" min="1" max="1440" name="interval_minutes" value="{{ values.interval_minutes }}" required><span>{% if language == 'en' %}minutes{% else %}минут{% endif %}</span></span><small>{% if language == 'en' %}From 1 minute to 24 hours. Frequent requests may be limited by the website.{% else %}Минимум 1 минута, максимум 24 часа. Частые запросы могут быть ограничены самим сайтом.{% endif %}</small></label>
-        <label class="field"><span>Имя</span><input name="display_name" maxlength="32" minlength="2" required value="{{ values.display_name }}" placeholder="{{ 'News' if language == 'en' else 'Новости' }}"><small>От 2 до 32 символов. Discord запрещает слова Discord и Clyde в имени вебхука.</small></label>
-        <label class="field"><span>Ссылка на аватар (необязательно)</span><input type="url" name="avatar_url" value="{{ values.avatar_url }}" placeholder="https://example.com/avatar.png"><small>Используйте публичную ссылку HTTPS или загрузите изображение ниже.</small></label>
-        <label class="field"><span>Загрузить изображение</span><input type="file" name="avatar_file" accept="image/png,image/jpeg,.png,.jpg,.jpeg"><small>PNG или JPG/JPEG, до 8 МБ. Квадратное изображение от 256 × 256 пикселей будет выглядеть лучше. Загруженный файл имеет приоритет над ссылкой.</small></label>
-        {% if feed and values.avatar_data %}<label class="checkbox-field avatar-reset"><input type="checkbox" name="clear_avatar" value="true"><span>Убрать загруженный аватар</span></label>{% endif %}
-        {% if values.avatar_preview_url %}<div class="avatar-current"><img src="{{ values.avatar_preview_url }}" alt=""><span>Текущий аватар</span></div>{% endif %}
+        <label class="field field-inline"><span>{% if language == 'en' %}Check every{% else %}{{ t("Проверять каждые") }}{% endif %}</span><span class="input-with-unit"><input type="number" min="1" max="1440" name="interval_minutes" value="{{ values.interval_minutes }}" required><span>{% if language == 'en' %}minutes{% else %}{{ t("минут") }}{% endif %}</span></span><small>{% if language == 'en' %}From 1 minute to 24 hours. Frequent requests may be limited by the website.{% else %}{{ t("Минимум 1 минута, максимум 24 часа. Частые запросы могут быть ограничены самим сайтом.") }}{% endif %}</small></label>
+        <label class="field"><span>{{ t("Имя") }}</span><input name="display_name" maxlength="32" minlength="2" required value="{{ values.display_name }}" placeholder="{% if language == 'en' %}News{% else %}Новости{% endif %}"><small>{{ t("От 2 до 32 символов. Discord запрещает слова Discord и Clyde в имени вебхука.") }}</small></label>
+        <label class="field"><span>{{ t("Ссылка на аватар (необязательно)") }}</span><input type="url" name="avatar_url" value="{{ values.avatar_url }}" placeholder="https://example.com/avatar.png"><small>{{ t("Используйте публичную ссылку HTTPS или загрузите изображение ниже.") }}</small></label>
+        <label class="field"><span>{{ t("Загрузить изображение") }}</span><input type="file" name="avatar_file" accept="image/png,image/jpeg,.png,.jpg,.jpeg"><small>{{ t("PNG или JPG/JPEG, до 8 МБ. Квадратное изображение от 256 × 256 пикселей будет выглядеть лучше. Загруженный файл имеет приоритет над ссылкой.") }}</small></label>
+        {% if feed and values.avatar_data %}<label class="checkbox-field avatar-reset"><input type="checkbox" name="clear_avatar" value="true"><span>{{ t("Убрать загруженный аватар") }}</span></label>{% endif %}
+        {% if values.avatar_preview_url %}<div class="avatar-current"><img src="{{ values.avatar_preview_url }}" alt=""><span>{{ t("Текущий аватар") }}</span></div>{% endif %}
       </section>
 
       <section class="form-section">
-      <div class="form-section-heading"><span class="section-number">03</span><div><h2>Формат новости</h2><p>Настройте карточку публикации и при необходимости добавьте обычный текст Markdown.</p></div></div>
-      <label class="field"><span>Заголовок карточки</span><textarea name="embed_title_template" rows="2" placeholder="{title}">{{ values.embed_title_template }}</textarea></label>
-      <label class="field"><span>Описание карточки</span><textarea name="embed_description_template" rows="5" placeholder="{description}
+      <div class="form-section-heading"><span class="section-number">03</span><div><h2>{{ t("Формат новости") }}</h2><p>{{ t("Настройте карточку публикации и при необходимости добавьте обычный текст Markdown.") }}</p></div></div>
+      <label class="field"><span>{{ t("Заголовок embed") }}</span><textarea name="embed_title_template" rows="2" placeholder="{title}">{{ values.embed_title_template }}</textarea></label>
+      <label class="field"><span>{{ t("Описание embed") }}</span><textarea name="embed_description_template" rows="5" placeholder="{% if language == 'en' %}{description}
 
-[Читать новость]({url})">{{ values.embed_description_template }}</textarea></label>
-      <label class="field"><span>Текст сообщения над карточкой — необязательно</span><textarea name="message_template" rows="3" placeholder="Например: 🔔 Новая запись от {feed}">{{ values.message_template }}</textarea><small>Можно использовать Markdown Discord. Чтобы оставить только карточку, поле можно не заполнять.</small></label>
-      <label class="field"><span>Цвет карточки</span><input class="color-input" type="color" name="embed_color" value="{{ values.embed_color_hex }}"></label>
+[Read article]({url}){% else %}{description}
+
+[Читать новость]({url}){% endif %}">{{ values.embed_description_template }}</textarea></label>
+      <label class="field"><span>{{ t("Текст сообщения над карточкой — необязательно") }}</span><textarea name="message_template" rows="3" placeholder="{{ t("Например: 🔔 Новая запись от {feed}") }}">{{ values.message_template }}</textarea><small>{{ t("Можно использовать Markdown Discord. Чтобы оставить только карточку, поле можно не заполнять.") }}</small></label>
+      <label class="field"><span>{{ t("Цвет карточки") }}</span><input class="color-input" type="color" name="embed_color" value="{{ values.embed_color_hex }}"></label>
       <div class="field layout-editor-field">
-        <span>{% if language == 'en' %}Card block order{% else %}Порядок блоков карточки{% endif %}</span>
-        <small>{% if language == 'en' %}Move blocks with the arrows. Add a separator after any block, then move or remove it. Empty blocks and missing images are skipped.{% else %}Перемещайте блоки стрелками. Добавьте разделитель после нужного блока, затем переместите или удалите его. Пустые блоки и отсутствующие изображения пропускаются.{% endif %}</small>
+        <span>{% if language == 'en' %}Card block order{% else %}{{ t("Порядок блоков карточки") }}{% endif %}</span>
+        <small>{% if language == 'en' %}Move blocks with the arrows. Add a separator after any block, then move or remove it. Empty blocks and missing images are skipped.{% else %}{{ t("Перемещайте блоки стрелками. Добавьте разделитель после нужного блока, затем переместите или удалите его. Пустые блоки и отсутствующие изображения пропускаются.") }}{% endif %}</small>
         <input type="hidden" name="layout_order" id="layout-order" value="{{ values.layout_order }}">
         <ol class="layout-order-editor" id="layout-order-editor">
-          <li data-layout-block="title"><span>{% if language == 'en' %}Headline{% else %}Заголовок{% endif %}</span><div><button type="button" data-move="up" aria-label="Переместить вверх">↑</button><button type="button" data-move="down" aria-label="Переместить вниз">↓</button><button type="button" data-insert-separator aria-label="Добавить разделитель после блока">＋</button></div></li>
-          <li data-layout-block="media"><span>{% if language == 'en' %}Image or GIF{% else %}Изображение или GIF{% endif %}</span><div><button type="button" data-move="up" aria-label="Переместить вверх">↑</button><button type="button" data-move="down" aria-label="Переместить вниз">↓</button><button type="button" data-insert-separator aria-label="Добавить разделитель после блока">＋</button></div></li>
-          <li data-layout-block="description"><span>{% if language == 'en' %}Description{% else %}Описание{% endif %}</span><div><button type="button" data-move="up" aria-label="Переместить вверх">↑</button><button type="button" data-move="down" aria-label="Переместить вниз">↓</button><button type="button" data-insert-separator aria-label="Добавить разделитель после блока">＋</button></div></li>
-          <li data-layout-block="buttons"><span>{% if language == 'en' %}Link buttons{% else %}Кнопки-ссылки{% endif %}</span><div><button type="button" data-move="up" aria-label="Переместить вверх">↑</button><button type="button" data-move="down" aria-label="Переместить вниз">↓</button><button type="button" data-insert-separator aria-label="Добавить разделитель после блока">＋</button></div></li>
+          <li data-layout-block="title"><span>{% if language == 'en' %}Headline{% else %}{{ t("Заголовок") }}{% endif %}</span><div><button type="button" data-move="up" aria-label="{{ t("Переместить вверх") }}">↑</button><button type="button" data-move="down" aria-label="{{ t("Переместить вниз") }}">↓</button><button type="button" data-insert-separator aria-label="{{ t("Добавить разделитель после блока") }}">＋</button></div></li>
+          <li data-layout-block="media"><span>{% if language == 'en' %}Image or GIF{% else %}{{ t("Изображение или GIF") }}{% endif %}</span><div><button type="button" data-move="up" aria-label="{{ t("Переместить вверх") }}">↑</button><button type="button" data-move="down" aria-label="{{ t("Переместить вниз") }}">↓</button><button type="button" data-insert-separator aria-label="{{ t("Добавить разделитель после блока") }}">＋</button></div></li>
+          <li data-layout-block="description"><span>{% if language == 'en' %}Description{% else %}{{ t("Описание") }}{% endif %}</span><div><button type="button" data-move="up" aria-label="{{ t("Переместить вверх") }}">↑</button><button type="button" data-move="down" aria-label="{{ t("Переместить вниз") }}">↓</button><button type="button" data-insert-separator aria-label="{{ t("Добавить разделитель после блока") }}">＋</button></div></li>
+          <li data-layout-block="buttons"><span>{% if language == 'en' %}Link buttons{% else %}{{ t("Кнопки-ссылки") }}{% endif %}</span><div><button type="button" data-move="up" aria-label="{{ t("Переместить вверх") }}">↑</button><button type="button" data-move="down" aria-label="{{ t("Переместить вниз") }}">↓</button><button type="button" data-insert-separator aria-label="{{ t("Добавить разделитель после блока") }}">＋</button></div></li>
         </ol>
       </div>
       <div class="field link-buttons-field">
-        <span>{% if language == 'en' %}Link buttons{% else %}Кнопки-ссылки{% endif %}</span>
-        <small>{% if language == 'en' %}Up to 5 buttons. Use {url} to link to the article, or enter a fixed HTTP(S) address.{% else %}До 5 кнопок. Укажите {url}, чтобы вести на статью, или задайте постоянную ссылку HTTP(S).{% endif %}</small>
+        <span>{% if language == 'en' %}Link buttons{% else %}{{ t("Кнопки-ссылки") }}{% endif %}</span>
+        <small>{% if language == 'en' %}Up to 5 buttons. Use {url} to link to the article, or enter a fixed HTTP(S) address.{% else %}{{ t("До 5 кнопок. Укажите {url}, чтобы вести на статью, или задайте постоянную ссылку HTTP(S).") }}{% endif %}</small>
         <div class="link-button-list" id="link-button-list">
           {% for button in values.buttons %}
             <div class="link-button-row">
-              <label class="field"><span>{% if language == 'en' %}Button label{% else %}Подпись{% endif %}</span><input type="text" name="button_labels" maxlength="80" value="{{ button.label }}" placeholder="{% if language == 'en' %}Read article{% else %}Читать новость{% endif %}"></label>
-              <label class="field"><span>{% if language == 'en' %}Link{% else %}Ссылка{% endif %}</span><input type="text" name="button_urls" maxlength="512" value="{{ button.url }}" placeholder="{url}" inputmode="url"></label>
-              <button class="button button-quiet button-small" type="button" data-remove-link-button>{% if language == 'en' %}Remove{% else %}Убрать{% endif %}</button>
+              <label class="field"><span>{% if language == 'en' %}Button label{% else %}{{ t("Подпись") }}{% endif %}</span><input type="text" name="button_labels" maxlength="80" value="{{ button.label }}" placeholder="{% if language == 'en' %}Read article{% else %}Читать новость{% endif %}"></label>
+              <label class="field"><span>{% if language == 'en' %}Link{% else %}{{ t("Ссылка") }}{% endif %}</span><input type="text" name="button_urls" maxlength="512" value="{{ button.url }}" placeholder="{url}" inputmode="url"></label>
+              <button class="button button-quiet button-small" type="button" data-remove-link-button>{% if language == 'en' %}Remove{% else %}{{ t("Убрать") }}{% endif %}</button>
             </div>
           {% endfor %}
         </div>
-        <p class="link-buttons-empty" id="link-buttons-empty">{% if language == 'en' %}No buttons yet.{% else %}Кнопок пока нет.{% endif %}</p>
-        <button class="button button-quiet button-small" type="button" id="add-link-button">{% if language == 'en' %}+ Add link button{% else %}+ Добавить кнопку-ссылку{% endif %}</button>
+        <p class="link-buttons-empty" id="link-buttons-empty">{% if language == 'en' %}No buttons yet.{% else %}{{ t("Кнопок пока нет") }}.{% endif %}</p>
+        <button class="button button-quiet button-small" type="button" id="add-link-button">{% if language == 'en' %}+ Add link button{% else %}{{ t("+ Добавить кнопку-ссылку") }}{% endif %}</button>
       </div>
       <label class="field"><span>{% if language == 'en' %}Publication time{% else %}Время публикации{% endif %}</span>
         <select name="timestamp_style">
@@ -87,44 +89,44 @@
         </select>
         <small>{% if language == 'en' %}Discord formats the date in each reader’s language and timezone automatically.{% else %}Discord автоматически показывает дату на языке и в часовом поясе каждого читателя.{% endif %}</small>
       </label>
-      <label class="checkbox-field"><input type="checkbox" name="show_image" value="true" {% if values.show_image %}checked{% endif %}><span>Показывать изображение записи, если оно есть</span></label>
-      <p class="field-hint">Изображение берётся из полей RSS/Atom и HTML-описания. Прямые GIF-ссылки сохраняют анимацию; если лента передаёт ролик MP4, Discord может показать его как видео.</p>
-      <details class="tag-help"><summary>Переменные для шаблона</summary><p>Вставляйте названия в фигурных скобках. Неизвестные переменные будут подсвечены при сохранении.</p><code>{{ placeholder_tags }}</code><a class="tag-guide-link" href="/help/templates">Полная справка по тегам и примеры →</a></details>
-      <details class="tag-help markdown-help"><summary>{% if language == 'en' %}Discord Markdown formatting{% else %}Форматирование Markdown в Discord{% endif %}</summary>
+      <label class="checkbox-field"><input type="checkbox" name="show_image" value="true" {% if values.show_image %}checked{% endif %}><span>{{ t("Показывать изображение записи, если оно есть") }}</span></label>
+      <p class="field-hint">{{ t("Изображение берётся из полей RSS/Atom и HTML-описания. Прямые GIF-ссылки сохраняют анимацию; если лента передаёт ролик MP4, Discord может показать его как видео.") }}</p>
+      <details class="tag-help"><summary>{{ t("Переменные для шаблона") }}</summary><p>{{ t("Вставляйте названия в фигурных скобках. Неизвестные переменные будут подсвечены при сохранении.") }}</p><code>{{ placeholder_tags }}</code><a class="tag-guide-link" href="/help/templates">{{ t("Полная справка по тегам и примеры →") }}</a></details>
+      <details class="tag-help markdown-help"><summary>{% if language == 'en' %}Discord Markdown formatting{% else %}Форматирование {{ t("Markdown в Discord") }}{% endif %}</summary>
         <p>{% if language == 'en' %}Use these patterns in the title, description, and message fields. The preview below renders them.{% else %}Используйте эти конструкции в заголовке, описании и тексте сообщения. Предпросмотр покажет результат.{% endif %}</p>
         <div class="markdown-reference">
-          <div><code>**текст**</code><span>{% if language == 'en' %}Bold{% else %}Жирный{% endif %}</span></div>
-          <div><code>*текст*</code><span>{% if language == 'en' %}Italic{% else %}Курсив{% endif %}</span></div>
-          <div><code>__текст__</code><span>{% if language == 'en' %}Underline{% else %}Подчёркнутый{% endif %}</span></div>
-          <div><code>~~текст~~</code><span>{% if language == 'en' %}Strikethrough{% else %}Зачёркнутый{% endif %}</span></div>
-          <div><code>`код`</code><span>{% if language == 'en' %}Inline code{% else %}Код в строке{% endif %}</span></div>
-          <div><code>[текст ссылки]({url})</code><span>{% if language == 'en' %}Link to the post{% else %}Ссылка на новость{% endif %}</span></div>
-          <div><code>&gt; цитата</code><span>{% if language == 'en' %}Quote{% else %}Цитата{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}**text**{% else %}**текст**{% endif %}</code><span>{% if language == 'en' %}Bold{% else %}Жирный{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}*text*{% else %}*текст*{% endif %}</code><span>{% if language == 'en' %}Italic{% else %}Курсив{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}__text__{% else %}__текст__{% endif %}</code><span>{% if language == 'en' %}Underline{% else %}Подчёркнутый{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}~~text~~{% else %}~~текст~~{% endif %}</code><span>{% if language == 'en' %}Strikethrough{% else %}Зачёркнутый{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}`code`{% else %}`код`{% endif %}</code><span>{% if language == 'en' %}Inline code{% else %}Код в строке{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}[link text]({url}){% else %}[текст ссылки]({url}){% endif %}</code><span>{% if language == 'en' %}Link to the post{% else %}{{ t("Ссылка") }} на новость{% endif %}</span></div>
+          <div><code>{% if language == 'en' %}&gt; quote{% else %}&gt; цитата{% endif %}</code><span>{% if language == 'en' %}Quote{% else %}Цитата{% endif %}</span></div>
         </div>
         <small>{% if language == 'en' %}For example: **{title}** on one line, then {description} below it.{% else %}Например: **{title}** в первой строке, а ниже — {description}.{% endif %}</small>
       </details>
       <div class="preview-wrap">
-        <div class="preview-label"><span>ПРЕДПРОСМОТР</span><span>пример новости</span></div>
+        <div class="preview-label"><span>{{ t("ПРЕДПРОСМОТР") }}</span><span>{{ t("пример новости") }}</span></div>
         <div class="discord-preview">
           <div class="preview-avatar" id="preview-avatar">◔</div>
           <div class="preview-body">
-            <div class="preview-author-line"><strong id="preview-name">Новости</strong><span class="preview-app">APP</span><span class="preview-now">сейчас</span></div>
+            <div class="preview-author-line"><strong id="preview-name">{{ t("Новости") }}</strong><span class="preview-app">APP</span><span class="preview-now">{{ t("сейчас") }}</span></div>
             <div class="preview-message" id="preview-message"></div>
             <div class="preview-embed" id="preview-embed">
               <div class="preview-embed-title" id="preview-title"></div>
               <div class="preview-embed-description" id="preview-description"></div>
-              <div class="preview-image-note" id="preview-image-note"><span id="preview-image-message">Изображение появится, если оно есть в RSS-ленте</span><img id="preview-image" alt="" referrerpolicy="no-referrer" hidden><video id="preview-video" controls playsinline preload="none" referrerpolicy="no-referrer" hidden></video></div>
+              <div class="preview-image-note" id="preview-image-note"><span id="preview-image-message">{{ t("Изображение появится, если оно есть в RSS-ленте") }}</span><img id="preview-image" alt="" referrerpolicy="no-referrer" hidden><video id="preview-video" controls playsinline preload="none" referrerpolicy="no-referrer" hidden></video></div>
               <div class="preview-link-buttons" id="preview-link-buttons"></div>
-              <div class="preview-footer" id="preview-footer">{{ values.title or 'Название ленты' }} · сегодня</div>
+              <div class="preview-footer" id="preview-footer">{{ values.title or t("Название ленты") }}{{ t(" · сегодня") }}</div>
             </div>
           </div>
         </div>
-        <p class="preview-disclaimer">Предпросмотр отображает Markdown и расположение блоков. Фактическая карточка зависит от содержимого RSS.</p>
+        <p class="preview-disclaimer">{{ t("Предпросмотр отображает Markdown и расположение блоков. Фактическая карточка зависит от содержимого RSS.") }}</p>
       </div>
     </section>
     </details>
 
-    <div class="form-actions"><a class="button button-quiet" href="/guilds/{{ guild.id }}">Отмена</a><button class="button button-primary" type="submit">{% if feed %}Сохранить настройки{% else %}Добавить ленту{% endif %}</button></div>
+    <div class="form-actions"><a class="button button-quiet" href="/guilds/{{ guild.id }}">{{ t("Отмена") }}</a><button class="button button-primary" type="submit">{% if feed %}{{ t("Сохранить настройки") }}{% else %}{{ t("Добавить ленту") }}{% endif %}</button></div>
   </form>
   <script src="/static/preview.js" defer></script>
   <script src="/static/feed_discovery.js" defer></script>

@@ -81,9 +81,11 @@
         return;
       }
       status.textContent = labels.found(candidates.length);
-      for (const candidate of candidates) {
+      for (const [index, candidate] of candidates.entries()) {
         const card = document.createElement("article");
         card.className = "feed-discovery-option";
+        const staggerIndex = Math.min(index, 4);
+        card.style.setProperty("--feed-stagger", (staggerIndex * 50) + "ms");
         const copy = document.createElement("div");
         copy.className = "feed-discovery-copy";
         const heading = document.createElement("strong");

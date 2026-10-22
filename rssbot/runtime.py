@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -24,11 +24,11 @@ from rssbot.formatting import (
     parse_link_buttons,
     render_template,
 )
+from rssbot.timezones import MOSCOW_TIMEZONE
 
 log = logging.getLogger("rssbot")
 DEFAULT_WEBHOOK_NAME = "RSS Feeds"
 DISCONNECT_ALERT_DELAY_SECONDS = 15
-MOSCOW_TIMEZONE = timezone(timedelta(hours=3), "MSK")
 RUSSIAN_MONTHS = (
     "января",
     "февраля",
@@ -84,7 +84,11 @@ class RSSRuntime:
         @self.bot.event
         async def on_ready() -> None:
             await self._mark_connected()
-            log.info("Discord-бот подключён как %s", self.bot.user)
+            log.info(
+                "Discord-бот подключён как %s; серверов: %d",
+                self.bot.user,
+                len(self.bot.guilds),
+            )
             try:
                 if self.settings.dev_guild_id:
                     guild = discord.Object(id=self.settings.dev_guild_id)

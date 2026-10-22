@@ -1,0 +1,195 @@
+<section class="landing-hero" aria-labelledby="landing-title">
+  <div class="landing-hero-copy">
+    <h1 id="landing-title" data-reveal-item>
+      {% if language == 'en' %}<span>News from RSS</span><span>in Discord</span>{% else %}<span>Новости из RSS</span><span>в Discord</span>{% endif %}
+    </h1>
+    <p class="landing-lead" data-reveal-item>
+      {% if language == 'en' %}FeedFlow sends new RSS and Atom entries to the Discord channel you choose.{% else %}FeedFlow отправляет новые записи из RSS и Atom в выбранный канал Discord.{% endif %}
+    </p>
+    <div class="landing-actions" data-reveal-item>
+      <a class="landing-button landing-button-primary" href="/auth/login">{{ t("Войти через Discord") }}<span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="landing-first-check" data-reveal-item>
+      <span class="landing-check-mark" aria-hidden="true"></span>
+      {% if language == 'en' %}FeedFlow sends only new entries to Discord.{% else %}Бот отправляет в Discord только новые записи.{% endif %}
+    </p>
+  </div>
+
+  <div class="landing-stage" data-shutter>
+    <div class="landing-demo" data-ui aria-label="{% if language == 'en' %}Interactive sample of a feed setup and Discord post{% else %}Интерактивный пример настройки ленты и публикации в Discord{% endif %}">
+      <section class="landing-feed-config" aria-labelledby="demo-config-title">
+        <div class="landing-demo-heading">
+          <div>
+            <p class="landing-demo-context">{% if language == 'en' %}Setup example{% else %}Пример настройки{% endif %}</p>
+            <h2 id="demo-config-title">{% if language == 'en' %}Project news{% else %}Новости проекта{% endif %}</h2>
+          </div>
+          <span class="landing-demo-status"><span aria-hidden="true"></span>{% if language == 'en' %}Active{% else %}Активна{% endif %}</span>
+        </div>
+        <div class="landing-demo-field">
+          <span>{% if language == 'en' %}RSS or Atom feed{% else %}RSS- или Atom-лента{% endif %}</span>
+          <div class="landing-demo-input" aria-label="{% if language == 'en' %}Sample feed address{% else %}Пример адреса ленты{% endif %}">https://news.example.test/feed.xml</div>
+        </div>
+        <label class="landing-demo-field" for="hero-channel">
+          <span>{% if language == 'en' %}Discord channel{% else %}Канал Discord{% endif %}</span>
+          <select id="hero-channel" class="landing-demo-select" data-channel-select aria-describedby="hero-channel-help">
+            <option value="news">{% if language == 'en' %}# news{% else %}# новости{% endif %}</option>
+            <option value="updates">{% if language == 'en' %}# updates{% else %}# обновления{% endif %}</option>
+          </select>
+          <span class="landing-sr-only" id="hero-channel-help">{% if language == 'en' %}The sample destination also updates in the post preview.{% else %}Канал назначения в примере обновится в предпросмотре публикации.{% endif %}</span>
+        </label>
+        <p class="landing-demo-footnote">{% if language == 'en' %}Sample only. This preview does not post to a server.{% else %}Только пример. Предпросмотр не отправляет сообщение на сервер.{% endif %}</p>
+      </section>
+
+      <section class="landing-discord-preview" aria-labelledby="demo-post-title">
+        <div class="landing-preview-heading">
+          <h2 id="demo-post-title">{% if language == 'en' %}Discord post preview{% else %}Предпросмотр публикации{% endif %}</h2>
+          <span>{% if language == 'en' %}Example{% else %}Пример{% endif %}</span>
+        </div>
+        <div class="landing-discord-message">
+          <img class="landing-discord-avatar" src="/static/feedflow-avatar.png" alt="">
+          <div class="landing-discord-copy">
+            <div class="landing-discord-author"><strong>FeedFlow</strong><span>{% if language == 'en' %}BOT{% else %}БОТ{% endif %}</span><time>{% if language == 'en' %}sample{% else %}пример{% endif %}</time></div>
+            <p class="landing-discord-channel">{% if language == 'en' %}Posts in{% else %}Публикация в{% endif %} <strong data-channel-output aria-live="polite">{% if language == 'en' %}# news{% else %}# новости{% endif %}</strong></p>
+            <article class="landing-embed">
+              <h3>{% if language == 'en' %}A new project update is available{% else %}Опубликовано обновление проекта{% endif %}</h3>
+              <p>{% if language == 'en' %}The feed entry is formatted as a Discord embed. Its title, description, and link come from the source entry and your template.{% else %}Запись ленты оформлена как embed Discord. Заголовок, описание и ссылка берутся из источника и шаблона.{% endif %}</p>
+              <span class="landing-preview-link">{% if language == 'en' %}Read the post{% else %}Читать новость{% endif %}<span aria-hidden="true">↗</span></span>
+              <p class="landing-embed-source">{% if language == 'en' %}Project news · sample entry{% else %}Новости проекта · пример записи{% endif %}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section landing-flow" id="how-it-works" aria-labelledby="flow-title">
+  <header class="landing-section-heading" data-reveal-item>
+    <h2 id="flow-title">{% if language == 'en' %}From feed to channel{% else %}От ленты к каналу{% endif %}</h2>
+    <p>{% if language == 'en' %}Connect a public feed, choose where its new entries should appear, and let FeedFlow check for updates.{% else %}Подключите публичную ленту, выберите канал для новых записей и поручите FeedFlow проверять обновления.{% endif %}</p>
+  </header>
+
+  <div class="landing-flow-rows">
+    <article class="landing-flow-row">
+      <div class="landing-flow-copy" data-reveal-item>
+        <h3>{% if language == 'en' %}Choose a public feed{% else %}Укажите публичную ленту{% endif %}</h3>
+        <p>{% if language == 'en' %}FeedFlow supports RSS and Atom. It checks the feed URL for new entries.{% else %}FeedFlow работает с RSS и Atom и проверяет адрес ленты на новые записи.{% endif %}</p>
+      </div>
+      <div class="landing-fragment landing-source-fragment" data-ui data-reveal-item aria-label="{% if language == 'en' %}Example feed URL setting{% else %}Пример настройки адреса ленты{% endif %}">
+        <div class="landing-fragment-top"><strong>{% if language == 'en' %}Feed address{% else %}Адрес ленты{% endif %}</strong><span>{% if language == 'en' %}Public URL{% else %}Публичный адрес{% endif %}</span></div>
+        <label class="landing-fragment-field">
+          <span>RSS / Atom</span>
+          <span class="landing-fragment-input">https://news.example.test/feed.xml</span>
+        </label>
+        <p class="landing-fragment-note">{% if language == 'en' %}Pages without an RSS or Atom feed are not scanned.{% else %}Страницы без RSS- или Atom-ленты не сканируются.{% endif %}</p>
+      </div>
+    </article>
+
+    <article class="landing-flow-row landing-flow-row-channel">
+      <div class="landing-flow-copy" data-reveal-item>
+        <h3>{% if language == 'en' %}Select a Discord channel{% else %}Выберите канал Discord{% endif %}</h3>
+        <p>{% if language == 'en' %}Each feed has a destination channel. Change it here to see the destination in the sample post above.{% else %}Для каждой ленты выбирается канал назначения. Поменяйте его, чтобы увидеть адрес в примере публикации выше.{% endif %}</p>
+      </div>
+      <div class="landing-fragment landing-channel-fragment" data-ui data-reveal-item aria-label="{% if language == 'en' %}Discord channel selection example{% else %}Пример выбора канала Discord{% endif %}">
+        <div class="landing-fragment-top"><strong>{% if language == 'en' %}Destination{% else %}Куда отправлять{% endif %}</strong><span>{% if language == 'en' %}Sample server{% else %}Пример сервера{% endif %}</span></div>
+        <p class="landing-server-name"><span class="landing-server-glyph" aria-hidden="true">F</span>{% if language == 'en' %}Your Discord server{% else %}Ваш Discord-сервер{% endif %}</p>
+        <label class="landing-fragment-field" for="flow-channel">
+          <span>{% if language == 'en' %}Channel{% else %}Канал{% endif %}</span>
+          <select id="flow-channel" class="landing-demo-select" data-channel-select>
+            <option value="news">{% if language == 'en' %}# news{% else %}# новости{% endif %}</option>
+            <option value="updates">{% if language == 'en' %}# updates{% else %}# обновления{% endif %}</option>
+          </select>
+        </label>
+      </div>
+    </article>
+
+    <article class="landing-flow-row landing-flow-row-first-check">
+      <div class="landing-flow-copy" data-reveal-item>
+        <h3>{% if language == 'en' %}Start without the archive{% else %}Начните без архива{% endif %}</h3>
+        <p>{% if language == 'en' %}On its first check, FeedFlow stores the latest entry without sending the feed’s older history to Discord.{% else %}При первой проверке FeedFlow сохраняет последнюю запись и не отправляет в Discord предыдущую историю ленты.{% endif %}</p>
+      </div>
+      <div class="landing-fragment landing-check-fragment" data-ui data-reveal-item aria-label="{% if language == 'en' %}First feed check example{% else %}Пример первой проверки ленты{% endif %}">
+        <div class="landing-fragment-top"><strong>{% if language == 'en' %}First feed check{% else %}Первая проверка ленты{% endif %}</strong><span>{% if language == 'en' %}Initial setup{% else %}Первый запуск{% endif %}</span></div>
+        <div class="landing-check-state">
+          <span class="landing-check-mark" aria-hidden="true"></span>
+          <div><strong>{% if language == 'en' %}Latest entry saved{% else %}Последняя запись сохранена{% endif %}</strong><p>{% if language == 'en' %}Older entries are skipped. New entries are sent on later checks.{% else %}Старые записи пропущены. Новые появятся при следующих проверках.{% endif %}</p></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="landing-section landing-settings" id="publishing-settings" aria-labelledby="settings-title">
+  <h2 class="landing-settings-title" id="settings-title">{% if language == 'en' %}Shape each post{% else %}Настройте вид публикации{% endif %}</h2>
+  <div class="landing-settings-copy" data-reveal-item>
+    <p>{% if language == 'en' %}Use the feed editor to choose what appears in Discord and how it is presented.{% else %}В редакторе ленты задайте, что попадёт в Discord и как будет выглядеть публикация.{% endif %}</p>
+    <ul class="landing-setting-notes">
+      <li><strong>{% if language == 'en' %}Message format{% else %}Формат сообщения{% endif %}</strong><span>{% if language == 'en' %}Discord Markdown and embed templates{% else %}Шаблоны embed и Markdown Discord{% endif %}</span></li>
+      <li><strong>{% if language == 'en' %}Post identity{% else %}Автор публикации{% endif %}</strong><span>{% if language == 'en' %}Choose the sender name and avatar{% else %}Имя и аватар отправителя{% endif %}</span></li>
+      <li><strong>{% if language == 'en' %}Links and media{% else %}Ссылки и медиа{% endif %}</strong><span>{% if language == 'en' %}Show available images and add link buttons{% else %}Показывайте изображения записи и добавляйте кнопки-ссылки{% endif %}</span></li>
+    </ul>
+  </div>
+
+  <div class="landing-settings-fragment" data-ui data-reveal-item aria-label="{% if language == 'en' %}Post customization settings example{% else %}Пример настройки оформления публикации{% endif %}">
+    <div class="landing-fragment-top"><strong>{% if language == 'en' %}Post appearance{% else %}Внешний вид публикации{% endif %}</strong><span>{% if language == 'en' %}Feed settings{% else %}Настройки ленты{% endif %}</span></div>
+    <div class="landing-settings-fields">
+      <div class="landing-setting-field"><span>{% if language == 'en' %}Embed title{% else %}Заголовок embed{% endif %}</span><code>{title}</code></div>
+      <div class="landing-setting-field"><span>{% if language == 'en' %}Description{% else %}Описание{% endif %}</span><code>{description}</code></div>
+      <div class="landing-setting-field landing-setting-color"><span>{% if language == 'en' %}Embed color{% else %}Цвет карточки{% endif %}</span><span class="landing-color-sample" aria-label="{% if language == 'en' %}Purple embed color example{% else %}Пример фиолетового цвета embed{% endif %}"></span></div>
+      <div class="landing-setting-field landing-setting-switch"><span>{% if language == 'en' %}Show entry image when available{% else %}Показывать изображение записи, если оно есть{% endif %}</span><span class="landing-switch-state" aria-label="{% if language == 'en' %}Enabled in this example{% else %}Включено в примере{% endif %}"><span></span></span></div>
+    </div>
+    <p class="landing-fragment-note">{% if language == 'en' %}The actual post depends on the fields provided by its feed entry.{% else %}Фактическая публикация зависит от полей конкретной RSS-записи.{% endif %}</p>
+  </div>
+</section>
+
+<section class="landing-section landing-limitations" aria-labelledby="limits-title">
+  <div data-reveal-item>
+    <h2 id="limits-title">{% if language == 'en' %}Works with feeds{% else %}Работает с лентами{% endif %}</h2>
+    <p>{% if language == 'en' %}FeedFlow reads public RSS and Atom feeds. It does not crawl pages that do not provide a feed.{% else %}FeedFlow читает публичные RSS- и Atom-ленты. Страницы без таких лент он не обходит.{% endif %}</p>
+  </div>
+  <div data-reveal-item>
+    <h3>{% if language == 'en' %}YouTube channels{% else %}Каналы YouTube{% endif %}</h3>
+    <p>{% if language == 'en' %}YouTube channel Atom feeds are supported without a separate YouTube API key.{% else %}Atom-ленты каналов YouTube поддерживаются без отдельного API-ключа YouTube.{% endif %}</p>
+  </div>
+</section>
+
+<section class="landing-section landing-faq" id="faq" aria-labelledby="faq-title">
+  <h2 class="landing-faq-heading" id="faq-title">{% if language == 'en' %}Common questions{% else %}Частые вопросы{% endif %}</h2>
+  <div class="landing-faq-list">
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}Do I need to host the bot myself?{% else %}Бота нужно размещать самостоятельно?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}Yes. FeedFlow is self-hosted: run it on your own server or hosting and connect it to Discord.{% else %}Да. FeedFlow размещается самостоятельно: запустите его на своём сервере или хостинге и подключите к Discord.{% endif %}</p>
+    </details>
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}Which websites can I connect?{% else %}Какие сайты можно подключить?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}A site must provide a public RSS or Atom feed. FeedFlow checks that feed; it does not scan ordinary web pages.{% else %}У сайта должна быть публичная RSS- или Atom-лента. FeedFlow проверяет её, но не сканирует обычные страницы сайта.{% endif %}</p>
+    </details>
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}Will old posts be sent when I add a feed?{% else %}При добавлении ленты отправятся старые записи?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}No. On the first check, FeedFlow saves the latest entry as a starting point. Older entries are not sent.{% else %}Нет. При первой проверке FeedFlow сохраняет последнюю запись как начальную точку. Старые записи не отправляются.{% endif %}</p>
+    </details>
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}Can I follow a YouTube channel?{% else %}Можно следить за каналом YouTube?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}Yes. FeedFlow supports YouTube channel Atom feeds without requiring a separate YouTube API key.{% else %}Да. FeedFlow поддерживает Atom-ленты каналов YouTube без отдельного API-ключа YouTube.{% endif %}</p>
+    </details>
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}What Discord permissions are needed?{% else %}Какие права нужны боту в Discord?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}The bot needs permission to view the selected channel and manage webhooks there. To manage server feeds in the web panel, sign in with an account that can manage that server.{% else %}Боту нужны права просматривать выбранный канал и управлять вебхуками в нём. Для управления лентами в панели войдите через аккаунт с правом управлять сервером.{% endif %}</p>
+    </details>
+    <details name="feedflow-faq" data-reveal-item>
+      <summary>{% if language == 'en' %}Can I customize the Discord post?{% else %}Можно оформить публикацию по-своему?{% endif %}<span aria-hidden="true"></span></summary>
+      <p>{% if language == 'en' %}Yes. Configure Markdown and embed templates, a color, sender name and avatar, available feed images, and link buttons.{% else %}Да. Настройте шаблоны Markdown и embed, цвет карточки, имя и аватар отправителя, изображения из ленты и кнопки-ссылки.{% endif %}</p>
+    </details>
+  </div>
+</section>
+
+<section class="landing-cta" aria-labelledby="landing-cta-title" data-reveal-item>
+  <div>
+    <h2 id="landing-cta-title">{% if language == 'en' %}Ready to connect your feeds?{% else %}Подключите свои ленты{% endif %}</h2>
+    <p>{% if language == 'en' %}Sign in with Discord to choose a server and configure its RSS feeds.{% else %}Войдите через Discord, выберите сервер и настройте его RSS-ленты.{% endif %}</p>
+  </div>
+  <div class="landing-cta-actions">
+    <a class="landing-button landing-button-primary" href="/auth/login">{{ t("Войти через Discord") }}<span aria-hidden="true">↗</span></a>
+    <a class="landing-cta-invite" href="{{ invite_url }}">{% if language == 'en' %}Invite FeedFlow to a server{% else %}Добавить FeedFlow на сервер{% endif %}</a>
+  </div>
+</section>

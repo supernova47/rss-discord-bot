@@ -6,8 +6,11 @@ from pathlib import Path
 
 from fastapi.templating import Jinja2Templates
 
+from rssbot.i18n import configure_jinja_environment
+
 PROJECT_DIR = Path(__file__).resolve().parents[1]
 templates = Jinja2Templates(directory=str(PROJECT_DIR / "rssbot" / "templates"))
+configure_jinja_environment(templates.env)
 
 
 class FeedFormState(HTMLParser):

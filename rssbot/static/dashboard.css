@@ -1,0 +1,961 @@
+/* Authenticated product screens: compact console styling, scoped away from the public landing page. */
+.dashboard-body .page-shell {
+  width: min(1200px, calc(100% - 64px));
+}
+
+.dashboard-body .topbar {
+  height: 64px;
+}
+
+.dashboard-body .footer {
+  padding-top: 16px;
+  padding-bottom: 20px;
+}
+
+.dashboard-body main {
+  min-height: calc(100vh - 128px);
+}
+
+.dashboard-body .page-heading {
+  padding: 34px 0 21px;
+  align-items: center;
+}
+
+.dashboard-body .page-heading h1 {
+  margin-bottom: 6px;
+  font-size: clamp(27px, 3vw, 32px);
+  line-height: 1.14;
+}
+
+.dashboard-body .eyebrow { /* taste-skill-ignore: preserve established page-context labels during this visual refinement. */
+  margin-bottom: 9px;
+  font-size: 10px;
+  letter-spacing: .13em;
+}
+
+.dashboard-body .lead.compact {
+  max-width: 680px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.dashboard-body .breadcrumbs {
+  padding-top: 19px;
+  font-size: 11px;
+}
+
+.dashboard-body .button {
+  min-height: 38px;
+  border-radius: 8px;
+  font-size: 12px;
+  transition:
+    transform 160ms var(--ease-out),
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    filter 140ms ease;
+}
+
+.dashboard-body .button-primary {
+  color: #12111b;
+  background: var(--accent-light);
+  box-shadow: none; /* taste-skill-ignore: remove the shared primary-button glow on the dashboard */
+}
+
+.dashboard-body .button-primary:hover {
+  background: #c8c0ff;
+}
+
+.dashboard-body .button-secondary {
+  color: #e9e5ff;
+  background: rgba(140,124,255,.10);
+  border-color: rgba(151,137,255,.35);
+}
+
+.dashboard-body .button-quiet {
+  border-color: #323648;
+  color: #d0d2de;
+}
+
+.dashboard-body .button-small {
+  min-height: 31px;
+  padding: 0 9px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+.dashboard-body .button-wide {
+  width: auto;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.dashboard-body .button:not(:disabled):hover {
+  transform: none;
+}
+
+.dashboard-body .button:not(:disabled):active {
+  transform: scale(.97);
+  filter: brightness(.92);
+}
+
+.dashboard-body .button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+}
+
+.dashboard-body .notice {
+  margin: 8px 0 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(160,164,180,.22);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dashboard-body .notice-error {
+  border-color: rgba(255,117,130,.3);
+}
+
+.dashboard-body .notice-success {
+  border-color: rgba(69,213,162,.28);
+}
+
+.dashboard-body .notice-warn {
+  border-color: rgba(241,195,101,.28);
+}
+
+.dashboard-body .status-pill {
+  padding: 3px 7px;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.dashboard-body .status-ok {
+  color: #74e4b8;
+  background: rgba(69,213,162,.09);
+}
+
+.dashboard-body .status-muted {
+  color: #b6bac7;
+  background: rgba(174,179,194,.08);
+}
+
+.dashboard-body .status-pending {
+  color: #f1d694;
+  background: rgba(241,195,101,.09);
+}
+
+/* Server index: one compact row per Discord server. */
+.dashboard-body .guild-search-panel {
+  margin: 0 0 12px;
+}
+
+.dashboard-body .guild-search-field {
+  width: min(100%, 390px);
+}
+
+.dashboard-body .guild-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 0 0 46px;
+  border-top: 1px solid var(--line);
+}
+
+.dashboard-body .guild-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 18px;
+  padding: 12px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard-body .guild-card-head {
+  min-height: 40px;
+  gap: 12px;
+}
+
+.dashboard-body .guild-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+}
+
+.dashboard-body .guild-icon-placeholder {
+  color: var(--accent-light);
+  background: rgba(140,124,255,.13);
+  font-size: 15px;
+}
+
+.dashboard-body .guild-card h2 {
+  min-width: 0;
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-body .guild-card-hint {
+  grid-column: 1 / -1;
+  min-height: 0;
+  margin: -5px 0 2px 50px;
+  font-size: 11px;
+}
+
+.dashboard-body .guild-card .button {
+  min-width: 138px;
+  padding: 0 12px;
+}
+
+.dashboard-body .guild-card .button span[aria-hidden="true"] {
+  margin-left: 5px;
+}
+
+.dashboard-body .empty-state {
+  margin: 26px 0 52px;
+  padding: 34px 20px;
+  border-radius: 12px;
+  background: rgba(20,22,32,.35);
+}
+
+.dashboard-body .empty-state h2 {
+  margin: 12px 0 7px;
+  font-size: 19px;
+}
+
+.dashboard-body .empty-state p {
+  max-width: 560px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.dashboard-body .notice-success,
+.dashboard-body .empty-state {
+  opacity: 1;
+  transform: none;
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+@starting-style {
+  .dashboard-body .notice-success,
+  .dashboard-body .empty-state {
+    opacity: 0;
+    transform: scale(.97);
+  }
+}
+
+/* Server feed list: flat rows, with the source state and next action close together. */
+.dashboard-body .guild-heading {
+  padding-top: 24px;
+}
+
+.dashboard-body .guild-heading-title {
+  gap: 12px;
+}
+
+.dashboard-body .guild-heading-title h1 {
+  font-size: 28px;
+}
+
+.dashboard-body .guild-icon.large {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.dashboard-body .summary-strip {
+  display: flex;
+  gap: 28px;
+  margin: 2px 0 14px;
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard-body .summary-strip div {
+  gap: 6px;
+}
+
+.dashboard-body .summary-strip strong {
+  color: var(--text);
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-body .summary-strip span {
+  font-size: 11px;
+}
+
+.dashboard-body .feed-filters {
+  margin: 0 0 11px;
+  padding: 12px;
+  border-radius: 9px;
+  background: rgba(20,22,32,.64);
+}
+
+.dashboard-body .feed-filter-controls {
+  grid-template-columns: minmax(220px, 1.5fr) minmax(145px, .75fr) minmax(170px, 1fr);
+  gap: 9px;
+}
+
+.dashboard-body .feed-filter-field {
+  gap: 5px;
+  font-size: 10px;
+}
+
+.dashboard-body .feed-filter-field input,
+.dashboard-body .feed-filter-field select {
+  min-height: 36px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.dashboard-body .feed-filter-summary {
+  margin-top: 9px;
+}
+
+.dashboard-body .feed-list {
+  margin-bottom: 44px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  overflow: visible;
+}
+
+.dashboard-body .feed-row {
+  min-width: 0;
+  gap: 16px;
+  padding: 13px 0;
+  border-left: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+
+.dashboard-body .feed-row-error {
+  padding-left: 0;
+  border-left: 0;
+  background: rgba(255,117,130,.035);
+}
+
+.dashboard-body .feed-identity {
+  gap: 11px;
+}
+
+.dashboard-body .feed-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+
+.dashboard-body .feed-avatar-placeholder {
+  color: var(--accent-light);
+  background: rgba(140,124,255,.12);
+  font-size: 17px;
+}
+
+.dashboard-body .feed-title-line {
+  gap: 7px;
+}
+
+.dashboard-body .feed-title-line h2 {
+  min-width: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-body .feed-url {
+  margin: 3px 0 5px;
+  color: #aeb2c0;
+  font-size: 11px;
+}
+
+.dashboard-body .feed-meta {
+  gap: 10px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-body .feed-pending {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.dashboard-body .feed-pending time {
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-body .feed-actions {
+  flex: none;
+  gap: 5px;
+}
+
+.dashboard-body .feed-actions .button-danger {
+  border-color: rgba(215,65,82,.2);
+  color: #ff9aa2;
+}
+
+.dashboard-body .feed-error-card {
+  margin-top: 8px;
+  padding: 8px 9px;
+  border-radius: 7px;
+}
+
+.dashboard-body .feed-error,
+.dashboard-body .feed-error-hint {
+  font-size: 10px;
+}
+
+.dashboard-body .install-panel {
+  grid-template-columns: auto minmax(0,1fr) auto;
+  gap: 14px;
+  margin: 15px 0 48px;
+  padding: 18px;
+  border-radius: 10px;
+  background: rgba(20,22,32,.7);
+}
+
+.dashboard-body .install-symbol {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(140,124,255,.10);
+  font-size: 20px;
+}
+
+.dashboard-body .install-panel h2 {
+  font-size: 15px;
+}
+
+/* Feed form: compact sections and controls; advanced options stay collapsible. */
+.dashboard-body .form-heading {
+  padding-bottom: 17px;
+}
+
+.dashboard-body .settings-form {
+  max-width: 920px;
+  margin: 0 auto 48px;
+  border-radius: 10px;
+  background: rgba(17,19,27,.9);
+}
+
+.dashboard-body .form-section {
+  padding: 18px 21px 20px;
+}
+
+.dashboard-body .form-section-heading {
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.dashboard-body .section-number {
+  min-width: 25px;
+  padding: 3px 0;
+  color: var(--accent-light);
+  background: transparent;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-body .form-section-heading h2 {
+  font-size: 15px;
+}
+
+.dashboard-body .field {
+  gap: 6px;
+  margin: 13px 0;
+  font-size: 11px;
+}
+
+.dashboard-body .field input,
+.dashboard-body .field textarea,
+.dashboard-body .field select {
+  padding: 9px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.dashboard-body .field input,
+.dashboard-body .field select {
+  min-height: 36px;
+}
+
+.dashboard-body .field textarea {
+  min-height: 64px;
+}
+
+.dashboard-body .advanced-settings-summary {
+  padding: 14px 21px;
+}
+
+.dashboard-body .link-button-row,
+.dashboard-body .feed-discovery-results {
+  border-radius: 7px;
+}
+
+.dashboard-body .feed-discovery-option {
+  border-radius: 6px;
+}
+
+.dashboard-body .form-actions {
+  gap: 8px;
+  padding: 13px 21px;
+  background: rgba(255,255,255,.012);
+}
+
+.dashboard-body .preview-wrap {
+  border-radius: 8px;
+}
+
+/* Test delivery and help reference use the same quiet row rhythm. */
+.dashboard-body .test-picker {
+  max-width: 920px;
+  margin: 0 auto 48px;
+  border-radius: 10px;
+  background: rgba(17,19,27,.9);
+}
+
+.dashboard-body .test-entry-list {
+  padding: 4px 17px;
+}
+
+.dashboard-body .test-entry {
+  gap: 11px;
+  padding: 12px 3px;
+  border-radius: 8px;
+  transition: background 140ms ease;
+}
+
+.dashboard-body .test-entry:hover {
+  background: rgba(255,255,255,.025);
+}
+
+.dashboard-body .test-entry:has(input:checked) {
+  background: rgba(140,124,255,.08);
+  outline: 1px solid rgba(151,137,255,.34);
+  outline-offset: -1px;
+}
+
+.dashboard-body .test-entry:has(input:focus-visible) {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 2px;
+}
+
+.dashboard-body .test-entry-copy {
+  gap: 5px;
+}
+
+.dashboard-body .test-entry-copy strong {
+  min-width: 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-body .test-entry-copy > span {
+  font-size: 11px;
+}
+
+.dashboard-body .template-guide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+  max-width: none;
+  margin: 0 0 44px;
+}
+
+.dashboard-body .template-table-wrap {
+  grid-column: 1 / -1;
+  border-radius: 9px;
+  scrollbar-color: #4b4569 #141620;
+  scrollbar-width: thin;
+}
+
+.dashboard-body .template-table-wrap:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 3px;
+}
+
+.dashboard-body .template-table {
+  min-width: 640px;
+  font-size: 11px;
+}
+
+.dashboard-body .template-table th,
+.dashboard-body .template-table td {
+  padding: 9px 12px;
+}
+
+.dashboard-body .template-table th {
+  font-size: 10px;
+}
+
+.dashboard-body .guide-example {
+  align-self: start;
+  margin: 14px 0 0;
+  padding: 15px 16px;
+  border-radius: 9px;
+  background: rgba(20,22,32,.7);
+}
+
+.dashboard-body .guide-example h2 {
+  margin-bottom: 9px;
+  font-size: 14px;
+}
+
+.dashboard-body .guide-example p {
+  font-size: 11px;
+}
+
+.dashboard-body .guide-example pre {
+  border-radius: 6px;
+  font-size: 11px;
+  scrollbar-color: #4b4569 #141620;
+  scrollbar-width: thin;
+}
+
+.dashboard-body .template-guide > .notice,
+.dashboard-body .template-guide > .form-actions {
+  grid-column: 1 / -1;
+}
+
+.dashboard-body .template-guide > .notice {
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-body .page-shell {
+    width: min(100% - 40px, 760px);
+  }
+
+  .dashboard-body .feed-filter-controls {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr);
+  }
+
+  .dashboard-body .feed-search-field {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-body .feed-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-body .feed-actions {
+    justify-content: flex-start;
+    padding-left: 45px;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-body .page-shell {
+    width: calc(100% - 30px);
+  }
+
+  .dashboard-body .topbar {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .dashboard-body .topbar-actions {
+    gap: 8px;
+  }
+
+  .dashboard-body .user-chip {
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .dashboard-body .user-chip > span:last-child {
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dashboard-body .brand {
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .dashboard-body .brand-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .dashboard-body .topbar-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .dashboard-body .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+    padding: 26px 0 18px;
+  }
+
+  .dashboard-body .page-heading > .button {
+    width: 100%;
+  }
+
+  .dashboard-body .page-heading h1 {
+    font-size: 27px;
+  }
+
+  .dashboard-body .user-chip > span:last-child {
+    max-width: 72px;
+  }
+
+  .dashboard-body .guild-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  .dashboard-body .guild-card .button {
+    justify-self: start;
+    margin-left: 50px;
+  }
+
+  .dashboard-body .guild-card-hint {
+    margin-left: 50px;
+  }
+
+  .dashboard-body .guild-search-panel {
+    justify-items: stretch;
+  }
+
+  .dashboard-body .guild-search-field {
+    width: 100%;
+  }
+
+  .dashboard-body .guild-heading {
+    align-items: flex-start;
+    gap: 14px;
+    padding-top: 20px;
+  }
+
+  .dashboard-body .guild-heading > .button {
+    width: 100%;
+  }
+
+  .dashboard-body .guild-heading-title {
+    gap: 10px;
+  }
+
+  .dashboard-body .guild-heading-title h1 {
+    font-size: 23px;
+    overflow-wrap: anywhere;
+  }
+
+  .dashboard-body .guild-icon.large {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dashboard-body .summary-strip {
+    gap: 12px 18px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+
+  .dashboard-body .summary-strip div {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .dashboard-body .feed-filter-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-body .feed-search-field {
+    grid-column: auto;
+  }
+
+  .dashboard-body .feed-filter-summary {
+    align-items: flex-start;
+  }
+
+  .dashboard-body .feed-row {
+    padding: 12px 0;
+  }
+
+  .dashboard-body .feed-actions {
+    gap: 5px;
+    padding-left: 0;
+  }
+
+  .dashboard-body .feed-actions .button {
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .dashboard-body .install-panel {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .dashboard-body .install-panel > .button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .dashboard-body .settings-form,
+  .dashboard-body .test-picker {
+    border-radius: 8px;
+  }
+
+  .dashboard-body .form-section {
+    padding: 15px 14px 17px;
+  }
+
+  .dashboard-body .advanced-settings-summary {
+    padding: 13px 14px;
+  }
+
+  .dashboard-body .field-inline {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .dashboard-body .field-inline small {
+    grid-column: auto;
+  }
+
+  .dashboard-body .link-button-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-body .link-button-row .button {
+    justify-self: start;
+  }
+
+  .dashboard-body .markdown-reference {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-body .form-actions {
+    flex-wrap: wrap;
+    padding: 12px 14px;
+  }
+
+  .dashboard-body .form-actions .button {
+    flex: 1 1 auto;
+  }
+
+  .dashboard-body .test-picker {
+    margin-bottom: 32px;
+  }
+
+  .dashboard-body .test-entry-list {
+    padding: 2px 12px;
+  }
+
+  .dashboard-body .test-entry {
+    padding: 11px 0;
+  }
+
+  .dashboard-body .template-guide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-body .template-table-wrap,
+  .dashboard-body .template-guide > .notice,
+  .dashboard-body .template-guide > .form-actions {
+    grid-column: auto;
+  }
+
+  .dashboard-body .guide-example {
+    padding: 13px;
+  }
+}
+
+@media (pointer: coarse) {
+  .dashboard-body .button-small {
+    min-height: 44px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .dashboard-body .notice-action {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .dashboard-body .test-entry {
+    min-height: 56px;
+  }
+}
+
+.dashboard-body ::selection {
+  color: var(--text);
+  background: rgba(140,124,255,.36);
+}
+
+.dashboard-body input,
+.dashboard-body textarea {
+  caret-color: var(--accent-light);
+}
+
+.dashboard-body .template-table-wrap::-webkit-scrollbar,
+.dashboard-body .guide-example pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dashboard-body .template-table-wrap::-webkit-scrollbar-track,
+.dashboard-body .guide-example pre::-webkit-scrollbar-track {
+  background: #141620;
+}
+
+.dashboard-body .template-table-wrap::-webkit-scrollbar-thumb,
+.dashboard-body .guide-example pre::-webkit-scrollbar-thumb {
+  border: 2px solid #141620;
+  border-radius: 8px;
+  background: #4b4569;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-body {
+    scroll-behavior: auto !important;
+  }
+
+  .dashboard-body .button {
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease, filter 140ms ease;
+  }
+
+  .dashboard-body .button:not(:disabled):hover,
+  .dashboard-body .button:not(:disabled):active {
+    transform: none;
+  }
+
+  .dashboard-body .notice-success,
+  .dashboard-body .empty-state {
+    transform: none;
+    transition: opacity 160ms ease;
+  }
+
+  @starting-style {
+    .dashboard-body .notice-success,
+    .dashboard-body .empty-state {
+      opacity: 0;
+      transform: none;
+    }
+  }
+}
